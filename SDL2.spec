@@ -4,7 +4,7 @@
 #
 Name     : SDL2
 Version  : 2.0.4
-Release  : 1
+Release  : 2
 URL      : https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
 Summary  : Simple DirectMedia Layer
@@ -13,6 +13,15 @@ License  : CPL-1.0 Zlib
 Requires: SDL2-bin
 Requires: SDL2-lib
 BuildRequires : cmake
+BuildRequires : pkgconfig(alsa)
+BuildRequires : pkgconfig(dbus-1)
+BuildRequires : pkgconfig(gl)
+BuildRequires : pkgconfig(libusb-1.0)
+BuildRequires : pkgconfig(x11)
+BuildRequires : pkgconfig(xcursor)
+BuildRequires : pkgconfig(xext)
+BuildRequires : pkgconfig(xinerama)
+BuildRequires : pkgconfig(xrandr)
 
 %description
 This is the Simple DirectMedia Layer, a generic API that provides low
@@ -52,7 +61,7 @@ lib components for the SDL2 package.
 %build
 mkdir clr-build
 pushd clr-build
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir}
+cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir} -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
 make V=1  %{?_smp_mflags}
 popd
 
