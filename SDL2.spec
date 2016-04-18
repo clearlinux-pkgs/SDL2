@@ -4,7 +4,7 @@
 #
 Name     : SDL2
 Version  : 2.0.4
-Release  : 3
+Release  : 4
 URL      : https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
 Summary  : Simple DirectMedia Layer
@@ -22,6 +22,7 @@ BuildRequires : pkgconfig(xcursor)
 BuildRequires : pkgconfig(xext)
 BuildRequires : pkgconfig(xi)
 BuildRequires : pkgconfig(xinerama)
+BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(xrandr)
 
 %description
