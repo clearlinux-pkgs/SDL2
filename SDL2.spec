@@ -4,7 +4,7 @@
 #
 Name     : SDL2
 Version  : 2.0.4
-Release  : 6
+Release  : 7
 URL      : https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
 Summary  : Simple DirectMedia Layer
@@ -63,7 +63,14 @@ lib components for the SDL2 package.
 %build
 mkdir clr-build
 pushd clr-build
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir} -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -flto -fno-semantic-interposition -falign-functions=32 -O3 "
+export FCFLAGS="$CFLAGS -flto -fno-semantic-interposition -falign-functions=32 -O3 "
+export FFLAGS="$CFLAGS -flto -fno-semantic-interposition -falign-functions=32 -O3 "
+export CXXFLAGS="$CXXFLAGS -flto -fno-semantic-interposition -falign-functions=32 -O3 "
+cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir} -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON -DLIB_SUFFIX=64
 make V=1  %{?_smp_mflags}
 popd
 
@@ -162,10 +169,10 @@ popd
 /usr/include/SDL2/SDL_video.h
 /usr/include/SDL2/begin_code.h
 /usr/include/SDL2/close_code.h
-/usr/lib/*.so
+/usr/lib64/*.so
 /usr/lib64/pkgconfig/*.pc
 /usr/share/aclocal/*.m4
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib/*.so.*
+/usr/lib64/*.so.*
