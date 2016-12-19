@@ -4,7 +4,7 @@
 #
 Name     : SDL2
 Version  : 2.0.5
-Release  : 10
+Release  : 11
 URL      : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Summary  : Simple DirectMedia Layer
@@ -13,6 +13,24 @@ License  : CPL-1.0 Zlib
 Requires: SDL2-bin
 Requires: SDL2-lib
 BuildRequires : cmake
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
+BuildRequires : pkgconfig(32alsa)
+BuildRequires : pkgconfig(32dbus-1)
+BuildRequires : pkgconfig(32gl)
+BuildRequires : pkgconfig(32libpulse-simple)
+BuildRequires : pkgconfig(32libusb-1.0)
+BuildRequires : pkgconfig(32wayland-protocols)
+BuildRequires : pkgconfig(32x11)
+BuildRequires : pkgconfig(32xcursor)
+BuildRequires : pkgconfig(32xext)
+BuildRequires : pkgconfig(32xi)
+BuildRequires : pkgconfig(32xinerama)
+BuildRequires : pkgconfig(32xkbcommon)
+BuildRequires : pkgconfig(32xrandr)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(dbus-1)
 BuildRequires : pkgconfig(gl)
@@ -51,6 +69,17 @@ Provides: SDL2-devel
 dev components for the SDL2 package.
 
 
+%package dev32
+Summary: dev32 components for the SDL2 package.
+Group: Default
+Requires: SDL2-lib32
+Requires: SDL2-bin
+Requires: SDL2-dev
+
+%description dev32
+dev32 components for the SDL2 package.
+
+
 %package lib
 Summary: lib components for the SDL2 package.
 Group: Libraries
@@ -59,8 +88,19 @@ Group: Libraries
 lib components for the SDL2 package.
 
 
+%package lib32
+Summary: lib32 components for the SDL2 package.
+Group: Default
+
+%description lib32
+lib32 components for the SDL2 package.
+
+
 %prep
 %setup -q -n SDL2-2.0.5
+pushd ..
+cp -a SDL2-2.0.5 build32
+popd
 
 %build
 export LANG=C
@@ -70,12 +110,33 @@ export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir} -DCMAKE_AR=/usr/bin/gcc-ar -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON -DLIB_SUFFIX=64
+cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir} -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
+make VERBOSE=1  %{?_smp_mflags}
+popd
+mkdir clr-build32
+pushd clr-build32
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export CFLAGS="$CFLAGS -m32"
+export CXXFLAGS="$CXXFLAGS -m32"
+cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir}32 -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=32 -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
 make VERBOSE=1  %{?_smp_mflags}
 popd
 
 %install
 rm -rf %{buildroot}
+pushd clr-build32
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 pushd clr-build
 %make_install
 popd
@@ -174,7 +235,19 @@ popd
 /usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libSDL2-2.0.so
+/usr/lib32/libSDL2.so
+/usr/lib32/pkgconfig/32sdl2.pc
+/usr/lib32/pkgconfig/sdl2.pc
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libSDL2-2.0.so.0.4.1
 /usr/lib64/libSDL2-2.0.so.1
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libSDL2-2.0.so.0.4.1
+/usr/lib32/libSDL2-2.0.so.1
