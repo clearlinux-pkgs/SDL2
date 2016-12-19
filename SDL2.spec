@@ -4,7 +4,7 @@
 #
 Name     : SDL2
 Version  : 2.0.5
-Release  : 9
+Release  : 10
 URL      : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Summary  : Simple DirectMedia Layer
@@ -169,10 +169,12 @@ popd
 /usr/include/SDL2/SDL_video.h
 /usr/include/SDL2/begin_code.h
 /usr/include/SDL2/close_code.h
-/usr/lib64/*.so
-/usr/lib64/pkgconfig/*.pc
+/usr/lib64/libSDL2-2.0.so
+/usr/lib64/libSDL2.so
+/usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/*.so.*
+/usr/lib64/libSDL2-2.0.so.0.4.1
+/usr/lib64/libSDL2-2.0.so.1
