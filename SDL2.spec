@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.0.5
-Release  : 13
+Release  : 14
 URL      : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
 Summary  : Simple DirectMedia Layer
