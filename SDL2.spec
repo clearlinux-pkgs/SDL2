@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.0.6
-Release  : 15
+Release  : 16
 URL      : https://www.libsdl.org/release/SDL2-2.0.6.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.6.tar.gz
 Source99 : https://www.libsdl.org/release/SDL2-2.0.6.tar.gz.sig
