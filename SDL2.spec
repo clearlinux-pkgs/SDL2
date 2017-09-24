@@ -5,10 +5,11 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.0.5
-Release  : 14
-URL      : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
+Version  : 2.0.6
+Release  : 15
+URL      : https://www.libsdl.org/release/SDL2-2.0.6.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.0.6.tar.gz
+Source99 : https://www.libsdl.org/release/SDL2-2.0.6.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : CPL-1.0 Zlib
@@ -20,6 +21,8 @@ BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
+BuildRequires : libXxf86vm-dev
+BuildRequires : libXxf86vm-dev32
 BuildRequires : pkgconfig(32alsa)
 BuildRequires : pkgconfig(32dbus-1)
 BuildRequires : pkgconfig(32gl)
@@ -99,28 +102,32 @@ lib32 components for the SDL2 package.
 
 
 %prep
-%setup -q -n SDL2-2.0.5
+%setup -q -n SDL2-2.0.6
 pushd ..
-cp -a SDL2-2.0.5 build32
+cp -a SDL2-2.0.6 build32
 popd
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
+export SOURCE_DATE_EPOCH=1506264151
 mkdir clr-build
 pushd clr-build
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir} -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=/usr/lib64 -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
 make VERBOSE=1  %{?_smp_mflags}
 popd
 mkdir clr-build32
 pushd clr-build32
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
@@ -129,6 +136,7 @@ make VERBOSE=1  %{?_smp_mflags}
 popd
 
 %install
+export SOURCE_DATE_EPOCH=1506264151
 rm -rf %{buildroot}
 pushd clr-build32
 %make_install32
@@ -145,6 +153,11 @@ popd
 
 %files
 %defattr(-,root,root,-)
+/usr/lib/cmake/SDL2/SDL2Config.cmake
+/usr/lib/cmake/SDL2/SDL2ConfigVersion.cmake
+/usr/lib/cmake/SDL2/SDL2Targets-noconfig.cmake
+/usr/lib/cmake/SDL2/SDL2Targets-relwithdebinfo.cmake
+/usr/lib/cmake/SDL2/SDL2Targets.cmake
 
 %files bin
 %defattr(-,root,root,-)
@@ -230,6 +243,7 @@ popd
 /usr/include/SDL2/SDL_types.h
 /usr/include/SDL2/SDL_version.h
 /usr/include/SDL2/SDL_video.h
+/usr/include/SDL2/SDL_vulkan.h
 /usr/include/SDL2/begin_code.h
 /usr/include/SDL2/close_code.h
 /usr/lib64/libSDL2-2.0.so
@@ -246,10 +260,10 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/libSDL2-2.0.so.0.4.1
-/usr/lib64/libSDL2-2.0.so.1
+/usr/lib64/libSDL2-2.0.so.0
+/usr/lib64/libSDL2-2.0.so.0.6.0
 
 %files lib32
 %defattr(-,root,root,-)
-/usr/lib32/libSDL2-2.0.so.0.4.1
-/usr/lib32/libSDL2-2.0.so.1
+/usr/lib32/libSDL2-2.0.so.0
+/usr/lib32/libSDL2-2.0.so.0.6.0

@@ -1,5 +1,5 @@
 PKG_NAME := SDL2
-URL := https://www.libsdl.org/release/SDL2-2.0.5.tar.gz
+URL := https://www.libsdl.org/release/SDL2-2.0.6.tar.gz
 
 
 include ../common/Makefile.common
