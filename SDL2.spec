@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.0.6
-Release  : 16
-URL      : https://www.libsdl.org/release/SDL2-2.0.6.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.0.6.tar.gz
-Source99 : https://www.libsdl.org/release/SDL2-2.0.6.tar.gz.sig
+Version  : 2.0.7
+Release  : 17
+URL      : https://www.libsdl.org/release/SDL2-2.0.7.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.0.7.tar.gz
+Source99 : https://www.libsdl.org/release/SDL2-2.0.7.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : CPL-1.0 Zlib
@@ -102,9 +102,9 @@ lib32 components for the SDL2 package.
 
 
 %prep
-%setup -q -n SDL2-2.0.6
+%setup -q -n SDL2-2.0.7
 pushd ..
-cp -a SDL2-2.0.6 build32
+cp -a SDL2-2.0.7 build32
 popd
 
 %build
@@ -112,7 +112,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1506264151
+export SOURCE_DATE_EPOCH=1508849264
 mkdir clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -136,7 +136,7 @@ make VERBOSE=1  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1506264151
+export SOURCE_DATE_EPOCH=1508849264
 rm -rf %{buildroot}
 pushd clr-build32
 %make_install32
@@ -236,6 +236,7 @@ popd
 /usr/include/SDL2/SDL_test_images.h
 /usr/include/SDL2/SDL_test_log.h
 /usr/include/SDL2/SDL_test_md5.h
+/usr/include/SDL2/SDL_test_memory.h
 /usr/include/SDL2/SDL_test_random.h
 /usr/include/SDL2/SDL_thread.h
 /usr/include/SDL2/SDL_timer.h
@@ -261,9 +262,9 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.6.0
+/usr/lib64/libSDL2-2.0.so.0.7.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.6.0
+/usr/lib32/libSDL2-2.0.so.0.7.0
