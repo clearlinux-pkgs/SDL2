@@ -8,3 +8,11 @@ esound
 32esound
 jack
 32jack
+32bcm_host
+32brcmegl
+32directfb
+32fusionsound
+bcm_host
+brcmegl
+directfb
+fusionsound

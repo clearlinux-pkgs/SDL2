@@ -5,17 +5,19 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.0.7
-Release  : 20
-URL      : https://www.libsdl.org/release/SDL2-2.0.7.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.0.7.tar.gz
-Source99 : https://www.libsdl.org/release/SDL2-2.0.7.tar.gz.sig
+Version  : 2.0.8
+Release  : 21
+URL      : https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
+Source99 : https://www.libsdl.org/release/SDL2-2.0.8.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
-License  : CPL-1.0 Zlib
+License  : BSD-3-Clause BSD-4-Clause-UC CPL-1.0 MIT Zlib
 Requires: SDL2-bin
 Requires: SDL2-lib
-BuildRequires : cmake
+Requires: SDL2-license
+BuildRequires : buildreq-cmake
+BuildRequires : buildreq-qmake
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -23,12 +25,20 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : libXxf86vm-dev
 BuildRequires : libXxf86vm-dev32
+BuildRequires : mesa-dev
 BuildRequires : pkgconfig(32alsa)
 BuildRequires : pkgconfig(32dbus-1)
+BuildRequires : pkgconfig(32egl)
+BuildRequires : pkgconfig(32gbm)
 BuildRequires : pkgconfig(32gl)
+BuildRequires : pkgconfig(32libdrm)
 BuildRequires : pkgconfig(32libpulse-simple)
 BuildRequires : pkgconfig(32libusb-1.0)
+BuildRequires : pkgconfig(32wayland-client)
+BuildRequires : pkgconfig(32wayland-cursor)
+BuildRequires : pkgconfig(32wayland-egl)
 BuildRequires : pkgconfig(32wayland-protocols)
+BuildRequires : pkgconfig(32wayland-scanner)
 BuildRequires : pkgconfig(32x11)
 BuildRequires : pkgconfig(32xcursor)
 BuildRequires : pkgconfig(32xext)
@@ -38,10 +48,17 @@ BuildRequires : pkgconfig(32xkbcommon)
 BuildRequires : pkgconfig(32xrandr)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(dbus-1)
+BuildRequires : pkgconfig(egl)
+BuildRequires : pkgconfig(gbm)
 BuildRequires : pkgconfig(gl)
+BuildRequires : pkgconfig(libdrm)
 BuildRequires : pkgconfig(libpulse-simple)
 BuildRequires : pkgconfig(libusb-1.0)
+BuildRequires : pkgconfig(wayland-client)
+BuildRequires : pkgconfig(wayland-cursor)
+BuildRequires : pkgconfig(wayland-egl)
 BuildRequires : pkgconfig(wayland-protocols)
+BuildRequires : pkgconfig(wayland-scanner)
 BuildRequires : pkgconfig(x11)
 BuildRequires : pkgconfig(xcursor)
 BuildRequires : pkgconfig(xext)
@@ -58,6 +75,7 @@ multiple platforms.
 %package bin
 Summary: bin components for the SDL2 package.
 Group: Binaries
+Requires: SDL2-license = %{version}-%{release}
 
 %description bin
 bin components for the SDL2 package.
@@ -66,9 +84,9 @@ bin components for the SDL2 package.
 %package dev
 Summary: dev components for the SDL2 package.
 Group: Development
-Requires: SDL2-lib
-Requires: SDL2-bin
-Provides: SDL2-devel
+Requires: SDL2-lib = %{version}-%{release}
+Requires: SDL2-bin = %{version}-%{release}
+Provides: SDL2-devel = %{version}-%{release}
 
 %description dev
 dev components for the SDL2 package.
@@ -77,17 +95,26 @@ dev components for the SDL2 package.
 %package dev32
 Summary: dev32 components for the SDL2 package.
 Group: Default
-Requires: SDL2-lib32
-Requires: SDL2-bin
-Requires: SDL2-dev
+Requires: SDL2-lib32 = %{version}-%{release}
+Requires: SDL2-bin = %{version}-%{release}
+Requires: SDL2-dev = %{version}-%{release}
 
 %description dev32
 dev32 components for the SDL2 package.
 
 
+%package doc
+Summary: doc components for the SDL2 package.
+Group: Documentation
+
+%description doc
+doc components for the SDL2 package.
+
+
 %package lib
 Summary: lib components for the SDL2 package.
 Group: Libraries
+Requires: SDL2-license = %{version}-%{release}
 
 %description lib
 lib components for the SDL2 package.
@@ -96,15 +123,24 @@ lib components for the SDL2 package.
 %package lib32
 Summary: lib32 components for the SDL2 package.
 Group: Default
+Requires: SDL2-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the SDL2 package.
 
 
+%package license
+Summary: license components for the SDL2 package.
+Group: Default
+
+%description license
+license components for the SDL2 package.
+
+
 %prep
-%setup -q -n SDL2-2.0.7
+%setup -q -n SDL2-2.0.8
 pushd ..
-cp -a SDL2-2.0.7 build32
+cp -a SDL2-2.0.8 build32
 popd
 
 %build
@@ -112,17 +148,17 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1508849264
-mkdir clr-build
+export SOURCE_DATE_EPOCH=1538180977
+mkdir -p clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=/usr/lib64 -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
-make VERBOSE=1  %{?_smp_mflags}
+%cmake .. -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
+make  %{?_smp_mflags}
 popd
-mkdir clr-build32
+mkdir -p clr-build32
 pushd clr-build32
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -131,13 +167,20 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semanti
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=32 -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
-make VERBOSE=1  %{?_smp_mflags}
+%cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DLIB_SUFFIX=32 .. -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
+make  %{?_smp_mflags}
+unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1508849264
+export SOURCE_DATE_EPOCH=1538180977
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/doc/SDL2
+cp COPYING.txt %{buildroot}/usr/share/doc/SDL2/COPYING.txt
+cp Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/doc/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
+cp Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/doc/SDL2/Xcode_SDL_pkg-support_resources_License.txt
+cp debian/copyright %{buildroot}/usr/share/doc/SDL2/debian_copyright
+cp src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/doc/SDL2/src_video_yuv2rgb_LICENSE
 pushd clr-build32
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -153,11 +196,6 @@ popd
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/cmake/SDL2/SDL2Config.cmake
-/usr/lib/cmake/SDL2/SDL2ConfigVersion.cmake
-/usr/lib/cmake/SDL2/SDL2Targets-noconfig.cmake
-/usr/lib/cmake/SDL2/SDL2Targets-relwithdebinfo.cmake
-/usr/lib/cmake/SDL2/SDL2Targets.cmake
 
 %files bin
 %defattr(-,root,root,-)
@@ -247,6 +285,10 @@ popd
 /usr/include/SDL2/SDL_vulkan.h
 /usr/include/SDL2/begin_code.h
 /usr/include/SDL2/close_code.h
+/usr/lib/cmake/SDL2/SDL2Config.cmake
+/usr/lib/cmake/SDL2/SDL2ConfigVersion.cmake
+/usr/lib/cmake/SDL2/SDL2Targets-relwithdebinfo.cmake
+/usr/lib/cmake/SDL2/SDL2Targets.cmake
 /usr/lib64/libSDL2-2.0.so
 /usr/lib64/libSDL2.so
 /usr/lib64/pkgconfig/sdl2.pc
@@ -259,12 +301,23 @@ popd
 /usr/lib32/pkgconfig/32sdl2.pc
 /usr/lib32/pkgconfig/sdl2.pc
 
+%files doc
+%defattr(0644,root,root,0755)
+/usr/share/doc/SDL2/Xcode_SDL_pkg-support_resources_License.txt
+/usr/share/doc/SDL2/debian_copyright
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.7.0
+/usr/lib64/libSDL2-2.0.so.0.8.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.7.0
+/usr/lib32/libSDL2-2.0.so.0.8.0
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/doc/SDL2/COPYING.txt
+/usr/share/doc/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
+/usr/share/doc/SDL2/src_video_yuv2rgb_LICENSE
