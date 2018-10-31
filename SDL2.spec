@@ -5,40 +5,28 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.0.8
-Release  : 22
-URL      : https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
-Source99 : https://www.libsdl.org/release/SDL2-2.0.8.tar.gz.sig
+Version  : 2.0.9
+Release  : 23
+URL      : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
+Source99 : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
-License  : BSD-3-Clause BSD-4-Clause-UC CPL-1.0 MIT Zlib
-Requires: SDL2-bin
-Requires: SDL2-lib
-Requires: SDL2-license
+License  : BSD-3-Clause BSD-4-Clause-UC CPL-1.0 GPL-3.0 ISC MIT Zlib
+Requires: SDL2-bin = %{version}-%{release}
+Requires: SDL2-lib = %{version}-%{release}
+Requires: SDL2-license = %{version}-%{release}
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-qmake
-BuildRequires : gcc-dev32
-BuildRequires : gcc-libgcc32
-BuildRequires : gcc-libstdc++32
-BuildRequires : glibc-dev32
-BuildRequires : glibc-libc32
 BuildRequires : libXxf86vm-dev
 BuildRequires : libXxf86vm-dev32
 BuildRequires : mesa-dev
 BuildRequires : pkgconfig(32alsa)
 BuildRequires : pkgconfig(32dbus-1)
-BuildRequires : pkgconfig(32egl)
-BuildRequires : pkgconfig(32gbm)
 BuildRequires : pkgconfig(32gl)
-BuildRequires : pkgconfig(32libdrm)
 BuildRequires : pkgconfig(32libpulse-simple)
 BuildRequires : pkgconfig(32libusb-1.0)
-BuildRequires : pkgconfig(32wayland-client)
-BuildRequires : pkgconfig(32wayland-cursor)
-BuildRequires : pkgconfig(32wayland-egl)
 BuildRequires : pkgconfig(32wayland-protocols)
-BuildRequires : pkgconfig(32wayland-scanner)
 BuildRequires : pkgconfig(32x11)
 BuildRequires : pkgconfig(32xcursor)
 BuildRequires : pkgconfig(32xext)
@@ -53,6 +41,7 @@ BuildRequires : pkgconfig(gbm)
 BuildRequires : pkgconfig(gl)
 BuildRequires : pkgconfig(libdrm)
 BuildRequires : pkgconfig(libpulse-simple)
+BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(libusb-1.0)
 BuildRequires : pkgconfig(wayland-client)
 BuildRequires : pkgconfig(wayland-cursor)
@@ -92,25 +81,6 @@ Provides: SDL2-devel = %{version}-%{release}
 dev components for the SDL2 package.
 
 
-%package dev32
-Summary: dev32 components for the SDL2 package.
-Group: Default
-Requires: SDL2-lib32 = %{version}-%{release}
-Requires: SDL2-bin = %{version}-%{release}
-Requires: SDL2-dev = %{version}-%{release}
-
-%description dev32
-dev32 components for the SDL2 package.
-
-
-%package doc
-Summary: doc components for the SDL2 package.
-Group: Documentation
-
-%description doc
-doc components for the SDL2 package.
-
-
 %package lib
 Summary: lib components for the SDL2 package.
 Group: Libraries
@@ -118,15 +88,6 @@ Requires: SDL2-license = %{version}-%{release}
 
 %description lib
 lib components for the SDL2 package.
-
-
-%package lib32
-Summary: lib32 components for the SDL2 package.
-Group: Default
-Requires: SDL2-license = %{version}-%{release}
-
-%description lib32
-lib32 components for the SDL2 package.
 
 
 %package license
@@ -138,17 +99,14 @@ license components for the SDL2 package.
 
 
 %prep
-%setup -q -n SDL2-2.0.8
-pushd ..
-cp -a SDL2-2.0.8 build32
-popd
+%setup -q -n SDL2-2.0.9
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1538181349
+export SOURCE_DATE_EPOCH=1541010290
 mkdir -p clr-build
 pushd clr-build
 export AR=gcc-ar
@@ -159,43 +117,21 @@ export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %cmake .. -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
-make  %{?_smp_mflags}
-popd
-mkdir -p clr-build32
-pushd clr-build32
-export AR=gcc-ar
-export RANLIB=gcc-ranlib
-export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-%cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DLIB_SUFFIX=32 .. -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
-make  %{?_smp_mflags}
-unset PKG_CONFIG_PATH
+make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1538181349
+export SOURCE_DATE_EPOCH=1541010290
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/SDL2
-cp COPYING.txt %{buildroot}/usr/share/doc/SDL2/COPYING.txt
-cp Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/doc/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
-cp Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/doc/SDL2/Xcode_SDL_pkg-support_resources_License.txt
-cp debian/copyright %{buildroot}/usr/share/doc/SDL2/debian_copyright
-cp src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/doc/SDL2/src_video_yuv2rgb_LICENSE
-pushd clr-build32
-%make_install32
-if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
-then
-pushd %{buildroot}/usr/lib32/pkgconfig
-for i in *.pc ; do ln -s $i 32$i ; done
-popd
-fi
-popd
+mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
+cp COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/COPYING.txt
+cp Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
+cp Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/SDL2/Xcode_SDL_pkg-support_resources_License.txt
+cp debian/copyright %{buildroot}/usr/share/package-licenses/SDL2/debian_copyright
+cp src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-bsd.txt
+cp src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-gpl3.txt
+cp src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-orig.txt
+cp src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/src_video_yuv2rgb_LICENSE
 pushd clr-build
 %make_install
 popd
@@ -221,6 +157,7 @@ popd
 /usr/include/SDL2/SDL_config_iphoneos.h
 /usr/include/SDL2/SDL_config_macosx.h
 /usr/include/SDL2/SDL_config_minimal.h
+/usr/include/SDL2/SDL_config_os2.h
 /usr/include/SDL2/SDL_config_pandora.h
 /usr/include/SDL2/SDL_config_psp.h
 /usr/include/SDL2/SDL_config_windows.h
@@ -264,6 +201,7 @@ popd
 /usr/include/SDL2/SDL_revision.h
 /usr/include/SDL2/SDL_rwops.h
 /usr/include/SDL2/SDL_scancode.h
+/usr/include/SDL2/SDL_sensor.h
 /usr/include/SDL2/SDL_shape.h
 /usr/include/SDL2/SDL_stdinc.h
 /usr/include/SDL2/SDL_surface.h
@@ -300,30 +238,18 @@ popd
 /usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
 
-%files dev32
-%defattr(-,root,root,-)
-/usr/lib32/libSDL2-2.0.so
-/usr/lib32/libSDL2.so
-/usr/lib32/pkgconfig/32sdl2.pc
-/usr/lib32/pkgconfig/sdl2.pc
-
-%files doc
-%defattr(0644,root,root,0755)
-/usr/share/doc/SDL2/Xcode_SDL_pkg-support_resources_License.txt
-/usr/share/doc/SDL2/debian_copyright
-
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.8.0
-
-%files lib32
-%defattr(-,root,root,-)
-/usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.8.0
+/usr/lib64/libSDL2-2.0.so.0.9.0
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/doc/SDL2/COPYING.txt
-/usr/share/doc/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
-/usr/share/doc/SDL2/src_video_yuv2rgb_LICENSE
+/usr/share/package-licenses/SDL2/COPYING.txt
+/usr/share/package-licenses/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
+/usr/share/package-licenses/SDL2/Xcode_SDL_pkg-support_resources_License.txt
+/usr/share/package-licenses/SDL2/debian_copyright
+/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-bsd.txt
+/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-gpl3.txt
+/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-orig.txt
+/usr/share/package-licenses/SDL2/src_video_yuv2rgb_LICENSE
