@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.0.9
-Release  : 25
+Release  : 26
 URL      : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
 Source99 : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz.sig
@@ -68,6 +68,7 @@ BuildRequires : pkgconfig(xi)
 BuildRequires : pkgconfig(xinerama)
 BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(xrandr)
+Patch1: 0001-Install-the-cmake-files-in-usr-lib64-like-everything.patch
 
 %description
 This is the Simple DirectMedia Layer, a generic API that provides low
@@ -133,6 +134,7 @@ license components for the SDL2 package.
 
 %prep
 %setup -q -n SDL2-2.0.9
+%patch1 -p1
 pushd ..
 cp -a SDL2-2.0.9 build32
 popd
@@ -142,7 +144,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546431215
+export SOURCE_DATE_EPOCH=1547682540
 mkdir -p clr-build
 pushd clr-build
 export AR=gcc-ar
@@ -175,7 +177,7 @@ unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1546431215
+export SOURCE_DATE_EPOCH=1547682540
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/COPYING.txt
@@ -292,10 +294,10 @@ popd
 /usr/include/SDL2/SDL_vulkan.h
 /usr/include/SDL2/begin_code.h
 /usr/include/SDL2/close_code.h
-/usr/lib/cmake/SDL2/SDL2Config.cmake
-/usr/lib/cmake/SDL2/SDL2ConfigVersion.cmake
-/usr/lib/cmake/SDL2/SDL2Targets-relwithdebinfo.cmake
-/usr/lib/cmake/SDL2/SDL2Targets.cmake
+/usr/lib64/cmake/SDL2/SDL2Config.cmake
+/usr/lib64/cmake/SDL2/SDL2ConfigVersion.cmake
+/usr/lib64/cmake/SDL2/SDL2Targets-relwithdebinfo.cmake
+/usr/lib64/cmake/SDL2/SDL2Targets.cmake
 /usr/lib64/libSDL2-2.0.so
 /usr/lib64/libSDL2.so
 /usr/lib64/pkgconfig/sdl2.pc
@@ -303,6 +305,10 @@ popd
 
 %files dev32
 %defattr(-,root,root,-)
+/usr/lib32/cmake/SDL2/SDL2Config.cmake
+/usr/lib32/cmake/SDL2/SDL2ConfigVersion.cmake
+/usr/lib32/cmake/SDL2/SDL2Targets-relwithdebinfo.cmake
+/usr/lib32/cmake/SDL2/SDL2Targets.cmake
 /usr/lib32/libSDL2-2.0.so
 /usr/lib32/libSDL2.so
 /usr/lib32/pkgconfig/32sdl2.pc

@@ -1,0 +1,26 @@
+From 072b88d25d5cf49cf1f4039c6b5ce76c234b9da5 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@intel.com>
+Date: Wed, 16 Jan 2019 15:45:37 -0800
+Subject: [PATCH] Install the cmake files in /usr/lib64, like everything else
+
+Signed-off-by: Thiago Macieira <thiago.macieira@intel.com>
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 3413e46..048ba89 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1799,7 +1799,7 @@ if (APPLE)
+ elseif (WINDOWS)
+   set(PKG_PREFIX "cmake")
+ else ()
+-  set(PKG_PREFIX "lib/cmake/SDL2")
++  set(PKG_PREFIX "lib${LIB_SUFFIX}/cmake/SDL2")
+ endif ()
+ 
+ include(CMakePackageConfigHelpers)
+-- 
+2.20.0
+
