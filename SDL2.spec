@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.0.9
-Release  : 27
+Release  : 28
 URL      : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
 Source99 : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz.sig
@@ -70,6 +70,7 @@ BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(xrandr)
 Patch1: 0001-Install-the-cmake-files-in-usr-lib64-like-everything.patch
 Patch2: CVE-2019-7572.patch
+Patch3: CVE-2019-7635.patch
 
 %description
 This is the Simple DirectMedia Layer, a generic API that provides low
@@ -137,6 +138,7 @@ license components for the SDL2 package.
 %setup -q -n SDL2-2.0.9
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 pushd ..
 cp -a SDL2-2.0.9 build32
 popd
@@ -146,7 +148,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1550264492
+export SOURCE_DATE_EPOCH=1553026860
 mkdir -p clr-build
 pushd clr-build
 export AR=gcc-ar
@@ -179,7 +181,7 @@ unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1550264492
+export SOURCE_DATE_EPOCH=1553026860
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/COPYING.txt
