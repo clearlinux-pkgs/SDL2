@@ -6,13 +6,13 @@
 #
 Name     : SDL2
 Version  : 2.0.9
-Release  : 28
+Release  : 29
 URL      : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
 Source99 : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz.sig
-Summary  : Simple DirectMedia Layer
+Summary  : A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2)
 Group    : Development/Tools
-License  : BSD-3-Clause BSD-4-Clause-UC CPL-1.0 GPL-3.0 ISC MIT Zlib
+License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC Zlib
 Requires: SDL2-bin = %{version}-%{release}
 Requires: SDL2-lib = %{version}-%{release}
 Requires: SDL2-license = %{version}-%{release}
@@ -25,7 +25,6 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : libXxf86vm-dev
 BuildRequires : libXxf86vm-dev32
-BuildRequires : mesa-dev
 BuildRequires : pkgconfig(32alsa)
 BuildRequires : pkgconfig(32dbus-1)
 BuildRequires : pkgconfig(32egl)
@@ -92,6 +91,7 @@ Group: Development
 Requires: SDL2-lib = %{version}-%{release}
 Requires: SDL2-bin = %{version}-%{release}
 Provides: SDL2-devel = %{version}-%{release}
+Requires: SDL2 = %{version}-%{release}
 
 %description dev
 dev components for the SDL2 package.
@@ -148,46 +148,45 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1553026860
+export SOURCE_DATE_EPOCH=1557075463
 mkdir -p clr-build
 pushd clr-build
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
 %cmake .. -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}
 popd
 mkdir -p clr-build32
 pushd clr-build32
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 %cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_INSTALL_LIBDIR=/usr/lib32 -DLIB_SUFFIX=32 .. -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}
 unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1553026860
+export SOURCE_DATE_EPOCH=1557075463
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/COPYING.txt
 cp Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
 cp Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/SDL2/Xcode_SDL_pkg-support_resources_License.txt
-cp debian/copyright %{buildroot}/usr/share/package-licenses/SDL2/debian_copyright
 cp src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-bsd.txt
 cp src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-gpl3.txt
 cp src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-orig.txt
@@ -333,7 +332,6 @@ popd
 /usr/share/package-licenses/SDL2/COPYING.txt
 /usr/share/package-licenses/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
 /usr/share/package-licenses/SDL2/Xcode_SDL_pkg-support_resources_License.txt
-/usr/share/package-licenses/SDL2/debian_copyright
 /usr/share/package-licenses/SDL2/src_hidapi_LICENSE-bsd.txt
 /usr/share/package-licenses/SDL2/src_hidapi_LICENSE-gpl3.txt
 /usr/share/package-licenses/SDL2/src_hidapi_LICENSE-orig.txt
