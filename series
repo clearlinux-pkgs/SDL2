@@ -1,3 +1,2 @@
 0001-Install-the-cmake-files-in-usr-lib64-like-everything.patch
-CVE-2019-7572.patch
-CVE-2019-7635.patch
+0001-build-Match-types-with-khrplatform.h.patch

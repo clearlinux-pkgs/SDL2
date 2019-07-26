@@ -5,40 +5,39 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.0.9
-Release  : 29
-URL      : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
-Source99 : https://www.libsdl.org/release/SDL2-2.0.9.tar.gz.sig
-Summary  : A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2)
+Version  : 2.0.10
+Release  : 32
+URL      : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz
+Source1 : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz.sig
+Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC Zlib
 Requires: SDL2-bin = %{version}-%{release}
 Requires: SDL2-lib = %{version}-%{release}
 Requires: SDL2-license = %{version}-%{release}
-BuildRequires : buildreq-cmake
 BuildRequires : buildreq-qmake
+BuildRequires : dbus-dev
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
+BuildRequires : glibc-staticdev
+BuildRequires : libXScrnSaver-dev
 BuildRequires : libXxf86vm-dev
 BuildRequires : libXxf86vm-dev32
+BuildRequires : libsamplerate-dev
+BuildRequires : pkg-config
 BuildRequires : pkgconfig(32alsa)
 BuildRequires : pkgconfig(32dbus-1)
-BuildRequires : pkgconfig(32egl)
 BuildRequires : pkgconfig(32gbm)
 BuildRequires : pkgconfig(32gl)
 BuildRequires : pkgconfig(32libdrm)
 BuildRequires : pkgconfig(32libpulse-simple)
 BuildRequires : pkgconfig(32libudev)
 BuildRequires : pkgconfig(32libusb-1.0)
-BuildRequires : pkgconfig(32wayland-client)
-BuildRequires : pkgconfig(32wayland-cursor)
-BuildRequires : pkgconfig(32wayland-egl)
 BuildRequires : pkgconfig(32wayland-protocols)
-BuildRequires : pkgconfig(32wayland-scanner)
 BuildRequires : pkgconfig(32x11)
 BuildRequires : pkgconfig(32xcursor)
 BuildRequires : pkgconfig(32xext)
@@ -48,18 +47,14 @@ BuildRequires : pkgconfig(32xkbcommon)
 BuildRequires : pkgconfig(32xrandr)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(dbus-1)
-BuildRequires : pkgconfig(egl)
 BuildRequires : pkgconfig(gbm)
 BuildRequires : pkgconfig(gl)
+BuildRequires : pkgconfig(ibus-1.0)
 BuildRequires : pkgconfig(libdrm)
 BuildRequires : pkgconfig(libpulse-simple)
 BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(libusb-1.0)
-BuildRequires : pkgconfig(wayland-client)
-BuildRequires : pkgconfig(wayland-cursor)
-BuildRequires : pkgconfig(wayland-egl)
 BuildRequires : pkgconfig(wayland-protocols)
-BuildRequires : pkgconfig(wayland-scanner)
 BuildRequires : pkgconfig(x11)
 BuildRequires : pkgconfig(xcursor)
 BuildRequires : pkgconfig(xext)
@@ -67,9 +62,9 @@ BuildRequires : pkgconfig(xi)
 BuildRequires : pkgconfig(xinerama)
 BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(xrandr)
+BuildRequires : wayland-dev
 Patch1: 0001-Install-the-cmake-files-in-usr-lib64-like-everything.patch
-Patch2: CVE-2019-7572.patch
-Patch3: CVE-2019-7635.patch
+Patch2: 0001-build-Match-types-with-khrplatform.h.patch
 
 %description
 This is the Simple DirectMedia Layer, a generic API that provides low
@@ -135,53 +130,47 @@ license components for the SDL2 package.
 
 
 %prep
-%setup -q -n SDL2-2.0.9
+%setup -q -n SDL2-2.0.10
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 pushd ..
-cp -a SDL2-2.0.9 build32
+cp -a SDL2-2.0.10 build32
 popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1557075463
-mkdir -p clr-build
-pushd clr-build
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1564173818
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
-%cmake .. -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+%configure --disable-static --enable-sdl-dlopen \
+--enable-pulseaudio-shared \
+--enable-alsa \
+--enable-video-wayland
 make  %{?_smp_mflags}
-popd
-mkdir -p clr-build32
-pushd clr-build32
-export AR=gcc-ar
-export RANLIB=gcc-ranlib
-export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+
+pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
-%cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_INSTALL_LIBDIR=/usr/lib32 -DLIB_SUFFIX=32 .. -DSDL_SHARED=ON -DALSA_SHARED=ON -DX11_SHARED=ON
+%configure --disable-static --enable-sdl-dlopen \
+--enable-pulseaudio-shared \
+--enable-alsa \
+--enable-video-wayland   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
-unset PKG_CONFIG_PATH
 popd
-
 %install
-export SOURCE_DATE_EPOCH=1557075463
+export SOURCE_DATE_EPOCH=1564173818
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/COPYING.txt
@@ -191,7 +180,7 @@ cp src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/src_h
 cp src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-gpl3.txt
 cp src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-orig.txt
 cp src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/src_video_yuv2rgb_LICENSE
-pushd clr-build32
+pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
@@ -200,9 +189,7 @@ for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
-pushd clr-build
 %make_install
-popd
 
 %files
 %defattr(-,root,root,-)
@@ -221,17 +208,6 @@ popd
 /usr/include/SDL2/SDL_blendmode.h
 /usr/include/SDL2/SDL_clipboard.h
 /usr/include/SDL2/SDL_config.h
-/usr/include/SDL2/SDL_config_android.h
-/usr/include/SDL2/SDL_config_iphoneos.h
-/usr/include/SDL2/SDL_config_macosx.h
-/usr/include/SDL2/SDL_config_minimal.h
-/usr/include/SDL2/SDL_config_os2.h
-/usr/include/SDL2/SDL_config_pandora.h
-/usr/include/SDL2/SDL_config_psp.h
-/usr/include/SDL2/SDL_config_windows.h
-/usr/include/SDL2/SDL_config_winrt.h
-/usr/include/SDL2/SDL_config_wiz.h
-/usr/include/SDL2/SDL_copying.h
 /usr/include/SDL2/SDL_cpuinfo.h
 /usr/include/SDL2/SDL_egl.h
 /usr/include/SDL2/SDL_endian.h
@@ -297,22 +273,14 @@ popd
 /usr/include/SDL2/SDL_vulkan.h
 /usr/include/SDL2/begin_code.h
 /usr/include/SDL2/close_code.h
-/usr/lib64/cmake/SDL2/SDL2Config.cmake
-/usr/lib64/cmake/SDL2/SDL2ConfigVersion.cmake
-/usr/lib64/cmake/SDL2/SDL2Targets-relwithdebinfo.cmake
-/usr/lib64/cmake/SDL2/SDL2Targets.cmake
-/usr/lib64/libSDL2-2.0.so
+/usr/lib64/cmake/SDL2/sdl2-config.cmake
 /usr/lib64/libSDL2.so
 /usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
 
 %files dev32
 %defattr(-,root,root,-)
-/usr/lib32/cmake/SDL2/SDL2Config.cmake
-/usr/lib32/cmake/SDL2/SDL2ConfigVersion.cmake
-/usr/lib32/cmake/SDL2/SDL2Targets-relwithdebinfo.cmake
-/usr/lib32/cmake/SDL2/SDL2Targets.cmake
-/usr/lib32/libSDL2-2.0.so
+/usr/lib32/cmake/SDL2/sdl2-config.cmake
 /usr/lib32/libSDL2.so
 /usr/lib32/pkgconfig/32sdl2.pc
 /usr/lib32/pkgconfig/sdl2.pc
@@ -320,12 +288,12 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.9.0
+/usr/lib64/libSDL2-2.0.so.0.10.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.9.0
+/usr/lib32/libSDL2-2.0.so.0.10.0
 
 %files license
 %defattr(0644,root,root,0755)

@@ -1,0 +1,7 @@
+2.0.10
+dbus-dev
+glibc-staticdev
+libXScrnSaver-dev
+libsamplerate-dev
+pkg-config
+wayland-dev

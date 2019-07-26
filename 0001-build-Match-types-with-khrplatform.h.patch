@@ -1,0 +1,29 @@
+From dd885415bd733b6cb2b4a26fc45ad07b93cf81da Mon Sep 17 00:00:00 2001
+From: "Anselmo L. S. Melo" <anselmo.melo@intel.com>
+Date: Fri, 26 Jul 2019 12:45:53 -0700
+Subject: [PATCH] Match types with khrplatform.h
+
+Avoids build errors due to pointers redefinition.
+---
+ include/SDL_opengl_glext.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/include/SDL_opengl_glext.h b/include/SDL_opengl_glext.h
+index cd3869f..675c4d2 100644
+--- a/include/SDL_opengl_glext.h
++++ b/include/SDL_opengl_glext.h
+@@ -469,8 +469,9 @@ GLAPI void APIENTRY glBlendEquation (GLenum mode);
+ typedef long GLsizeiptr;
+ typedef long GLintptr;
+ #else
+-typedef ptrdiff_t GLsizeiptr;
+-typedef ptrdiff_t GLintptr;
++#include <KHR/khrplatform.h>
++typedef khronos_ssize_t GLsizeiptr;
++typedef khronos_intptr_t GLintptr;
+ #endif
+ #define GL_BUFFER_SIZE                    0x8764
+ #define GL_BUFFER_USAGE                   0x8765
+-- 
+2.22.0
+
