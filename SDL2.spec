@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.0.10
-Release  : 33
+Release  : 34
 URL      : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz
 Source1 : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz.sig
@@ -65,6 +65,7 @@ BuildRequires : pkgconfig(xrandr)
 BuildRequires : wayland-dev
 Patch1: 0001-Install-the-cmake-files-in-usr-lib64-like-everything.patch
 Patch2: 0001-build-Match-types-with-khrplatform.h.patch
+Patch3: CVE-2019-13616.patch
 
 %description
 This is the Simple DirectMedia Layer, a generic API that provides low
@@ -133,6 +134,7 @@ license components for the SDL2 package.
 %setup -q -n SDL2-2.0.10
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 pushd ..
 cp -a SDL2-2.0.10 build32
 popd
@@ -142,7 +144,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564173818
+export SOURCE_DATE_EPOCH=1564509984
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -170,7 +172,7 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1564173818
+export SOURCE_DATE_EPOCH=1564509984
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/COPYING.txt
