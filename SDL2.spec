@@ -6,13 +6,13 @@
 #
 Name     : SDL2
 Version  : 2.0.10
-Release  : 34
+Release  : 35
 URL      : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz
 Source1 : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
-License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC Zlib
+License  : BSD-3-Clause BSD-4-Clause-UC CPL-1.0 GPL-3.0 ISC LGPL-2.1 MIT PostgreSQL RSA-MD Zlib
 Requires: SDL2-bin = %{version}-%{release}
 Requires: SDL2-lib = %{version}-%{release}
 Requires: SDL2-license = %{version}-%{release}
@@ -144,7 +144,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564509984
+export SOURCE_DATE_EPOCH=1569544799
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -162,9 +162,9 @@ make  %{?_smp_mflags}
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static --enable-sdl-dlopen \
 --enable-pulseaudio-shared \
 --enable-alsa \
@@ -172,12 +172,13 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1564509984
+export SOURCE_DATE_EPOCH=1569544799
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/COPYING.txt
 cp Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
 cp Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/SDL2/Xcode_SDL_pkg-support_resources_License.txt
+cp debian/copyright %{buildroot}/usr/share/package-licenses/SDL2/debian_copyright
 cp src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-bsd.txt
 cp src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-gpl3.txt
 cp src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-orig.txt
@@ -302,6 +303,7 @@ popd
 /usr/share/package-licenses/SDL2/COPYING.txt
 /usr/share/package-licenses/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
 /usr/share/package-licenses/SDL2/Xcode_SDL_pkg-support_resources_License.txt
+/usr/share/package-licenses/SDL2/debian_copyright
 /usr/share/package-licenses/SDL2/src_hidapi_LICENSE-bsd.txt
 /usr/share/package-licenses/SDL2/src_hidapi_LICENSE-gpl3.txt
 /usr/share/package-licenses/SDL2/src_hidapi_LICENSE-orig.txt

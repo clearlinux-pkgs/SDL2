@@ -1,3 +1,4 @@
+Configure miss: windres
 Configure miss: linker option --dynamicbase
 Configure miss: linker option --nxcompat
 Configure miss: linker option --high-entropy-va
@@ -51,6 +52,7 @@ Configure miss: pthread_set_name_np
 Configure miss: Vivante VDK API
 Configure miss: Vivante FB API
 Configure miss: i686-generic-linux-gnu-windres
+Configure miss: windres
 Configure miss: linker option --dynamicbase
 Configure miss: linker option --nxcompat
 Configure miss: linker option --high-entropy-va
