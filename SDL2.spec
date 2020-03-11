@@ -5,17 +5,18 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.0.10
-Release  : 36
-URL      : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz
-Source1 : https://www.libsdl.org/release/SDL2-2.0.10.tar.gz.sig
+Version  : 2.0.12
+Release  : 37
+URL      : https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
+Source1  : https://www.libsdl.org/release/SDL2-2.0.12.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
-License  : BSD-3-Clause BSD-4-Clause-UC CPL-1.0 GPL-3.0 ISC LGPL-2.1 MIT PostgreSQL RSA-MD Zlib
+License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC Zlib
 Requires: SDL2-bin = %{version}-%{release}
 Requires: SDL2-lib = %{version}-%{release}
 Requires: SDL2-license = %{version}-%{release}
+BuildRequires : buildreq-cmake
 BuildRequires : buildreq-qmake
 BuildRequires : dbus-dev
 BuildRequires : gcc-dev32
@@ -63,9 +64,6 @@ BuildRequires : pkgconfig(xinerama)
 BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(xrandr)
 BuildRequires : wayland-dev
-Patch1: 0001-Install-the-cmake-files-in-usr-lib64-like-everything.patch
-Patch2: 0001-build-Match-types-with-khrplatform.h.patch
-Patch3: CVE-2019-13616.patch
 
 %description
 This is the Simple DirectMedia Layer, a generic API that provides low
@@ -131,12 +129,10 @@ license components for the SDL2 package.
 
 
 %prep
-%setup -q -n SDL2-2.0.10
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%setup -q -n SDL2-2.0.12
+cd %{_builddir}/SDL2-2.0.12
 pushd ..
-cp -a SDL2-2.0.10 build32
+cp -a SDL2-2.0.12 build32
 popd
 
 %build
@@ -144,7 +140,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1569544799
+export SOURCE_DATE_EPOCH=1583891576
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -172,17 +168,15 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1569544799
+export SOURCE_DATE_EPOCH=1583891576
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
-cp COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/COPYING.txt
-cp Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
-cp Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/SDL2/Xcode_SDL_pkg-support_resources_License.txt
-cp debian/copyright %{buildroot}/usr/share/package-licenses/SDL2/debian_copyright
-cp src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-bsd.txt
-cp src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-gpl3.txt
-cp src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-orig.txt
-cp src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/src_video_yuv2rgb_LICENSE
+cp %{_builddir}/SDL2-2.0.12/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
+cp %{_builddir}/SDL2-2.0.12/debian/copyright %{buildroot}/usr/share/package-licenses/SDL2/ff92c0e1e7b4047538588f56ff207441fc06d7a0
+cp %{_builddir}/SDL2-2.0.12/src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
+cp %{_builddir}/SDL2-2.0.12/src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/SDL2-2.0.12/src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
+cp %{_builddir}/SDL2-2.0.12/src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -228,6 +222,7 @@ popd
 /usr/include/SDL2/SDL_log.h
 /usr/include/SDL2/SDL_main.h
 /usr/include/SDL2/SDL_messagebox.h
+/usr/include/SDL2/SDL_metal.h
 /usr/include/SDL2/SDL_mouse.h
 /usr/include/SDL2/SDL_mutex.h
 /usr/include/SDL2/SDL_name.h
@@ -276,6 +271,7 @@ popd
 /usr/include/SDL2/SDL_vulkan.h
 /usr/include/SDL2/begin_code.h
 /usr/include/SDL2/close_code.h
+/usr/lib64/cmake/SDL2/sdl2-config-version.cmake
 /usr/lib64/cmake/SDL2/sdl2-config.cmake
 /usr/lib64/libSDL2.so
 /usr/lib64/pkgconfig/sdl2.pc
@@ -283,6 +279,7 @@ popd
 
 %files dev32
 %defattr(-,root,root,-)
+/usr/lib32/cmake/SDL2/sdl2-config-version.cmake
 /usr/lib32/cmake/SDL2/sdl2-config.cmake
 /usr/lib32/libSDL2.so
 /usr/lib32/pkgconfig/32sdl2.pc
@@ -291,20 +288,18 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.10.0
+/usr/lib64/libSDL2-2.0.so.0.12.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.10.0
+/usr/lib32/libSDL2-2.0.so.0.12.0
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/SDL2/COPYING.txt
-/usr/share/package-licenses/SDL2/Xcode-iOS_Demos_data_bitmapfont_license.txt
-/usr/share/package-licenses/SDL2/Xcode_SDL_pkg-support_resources_License.txt
-/usr/share/package-licenses/SDL2/debian_copyright
-/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-bsd.txt
-/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-gpl3.txt
-/usr/share/package-licenses/SDL2/src_hidapi_LICENSE-orig.txt
-/usr/share/package-licenses/SDL2/src_video_yuv2rgb_LICENSE
+/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
+/usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
+/usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
+/usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
+/usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+/usr/share/package-licenses/SDL2/ff92c0e1e7b4047538588f56ff207441fc06d7a0

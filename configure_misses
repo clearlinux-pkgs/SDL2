@@ -2,6 +2,8 @@ Configure miss: windres
 Configure miss: linker option --dynamicbase
 Configure miss: linker option --nxcompat
 Configure miss: linker option --high-entropy-va
+Configure miss: wcslcpy
+Configure miss: wcslcat
 Configure miss: _strrev
 Configure miss: _strupr
 Configure miss: _strlwr
@@ -24,6 +26,7 @@ Configure miss: Altivec with GCC altivec.h and -faltivec option
 Configure miss: Altivec with GCC -faltivec option
 Configure miss: necessary GCC -Wno-multichar option
 Configure miss: dlopen in -lc
+Configure miss: ARM SIMD
 Configure miss: JACK
 Configure miss: artsc-config
 Configure miss: esd-config
@@ -56,6 +59,8 @@ Configure miss: windres
 Configure miss: linker option --dynamicbase
 Configure miss: linker option --nxcompat
 Configure miss: linker option --high-entropy-va
+Configure miss: wcslcpy
+Configure miss: wcslcat
 Configure miss: _strrev
 Configure miss: _strupr
 Configure miss: _strlwr
@@ -78,6 +83,7 @@ Configure miss: Altivec with GCC altivec.h and -faltivec option
 Configure miss: Altivec with GCC -faltivec option
 Configure miss: necessary GCC -Wno-multichar option
 Configure miss: dlopen in -lc
+Configure miss: ARM SIMD
 Configure miss: JACK
 Configure miss: artsc-config
 Configure miss: esd-config
