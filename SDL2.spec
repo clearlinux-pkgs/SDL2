@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.0.12
-Release  : 39
+Release  : 40
 URL      : https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
 Source1  : https://www.libsdl.org/release/SDL2-2.0.12.tar.gz.sig
@@ -16,14 +16,26 @@ License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC Zlib
 Requires: SDL2-bin = %{version}-%{release}
 Requires: SDL2-lib = %{version}-%{release}
 Requires: SDL2-license = %{version}-%{release}
+BuildRequires : alsa-lib-dev
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-qmake
 BuildRequires : dbus-dev
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : glibc-staticdev
 BuildRequires : libXScrnSaver-dev
 BuildRequires : libXxf86vm-dev
 BuildRequires : libsamplerate-dev
 BuildRequires : pkg-config
+BuildRequires : pkgconfig(32dbus-1)
+BuildRequires : pkgconfig(32gbm)
+BuildRequires : pkgconfig(32libdrm)
+BuildRequires : pkgconfig(32libpulse-simple)
+BuildRequires : pkgconfig(32libudev)
+BuildRequires : pkgconfig(32libusb-1.0)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(dbus-1)
 BuildRequires : pkgconfig(gbm)
@@ -69,6 +81,17 @@ Requires: SDL2 = %{version}-%{release}
 dev components for the SDL2 package.
 
 
+%package dev32
+Summary: dev32 components for the SDL2 package.
+Group: Default
+Requires: SDL2-lib32 = %{version}-%{release}
+Requires: SDL2-bin = %{version}-%{release}
+Requires: SDL2-dev = %{version}-%{release}
+
+%description dev32
+dev32 components for the SDL2 package.
+
+
 %package lib
 Summary: lib components for the SDL2 package.
 Group: Libraries
@@ -76,6 +99,15 @@ Requires: SDL2-license = %{version}-%{release}
 
 %description lib
 lib components for the SDL2 package.
+
+
+%package lib32
+Summary: lib32 components for the SDL2 package.
+Group: Default
+Requires: SDL2-license = %{version}-%{release}
+
+%description lib32
+lib32 components for the SDL2 package.
 
 
 %package license
@@ -89,13 +121,16 @@ license components for the SDL2 package.
 %prep
 %setup -q -n SDL2-2.0.12
 cd %{_builddir}/SDL2-2.0.12
+pushd ..
+cp -a SDL2-2.0.12 build32
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1600305690
+export SOURCE_DATE_EPOCH=1600366110
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -110,8 +145,20 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -f
 --enable-video-wayland
 make  %{?_smp_mflags}
 
+pushd ../build32/
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
+%configure --disable-static --enable-sdl-dlopen \
+--enable-pulseaudio-shared \
+--enable-alsa \
+--enable-video-wayland   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make  %{?_smp_mflags}
+popd
 %install
-export SOURCE_DATE_EPOCH=1600305690
+export SOURCE_DATE_EPOCH=1600366110
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-2.0.12/COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/5d118dd9f68514e2e8c0cee82a51e5672fa61a05
@@ -122,6 +169,15 @@ cp %{_builddir}/SDL2-2.0.12/src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/pa
 cp %{_builddir}/SDL2-2.0.12/src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 cp %{_builddir}/SDL2-2.0.12/src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
 cp %{_builddir}/SDL2-2.0.12/src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 %make_install
 
 %files
@@ -213,10 +269,23 @@ cp %{_builddir}/SDL2-2.0.12/src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/pac
 /usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/cmake/SDL2/sdl2-config-version.cmake
+/usr/lib32/cmake/SDL2/sdl2-config.cmake
+/usr/lib32/libSDL2.so
+/usr/lib32/pkgconfig/32sdl2.pc
+/usr/lib32/pkgconfig/sdl2.pc
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libSDL2-2.0.so.0
 /usr/lib64/libSDL2-2.0.so.0.12.0
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libSDL2-2.0.so.0
+/usr/lib32/libSDL2-2.0.so.0.12.0
 
 %files license
 %defattr(0644,root,root,0755)

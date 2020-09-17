@@ -1,4 +1,5 @@
 2.0.12
+alsa-lib-dev
 dbus-dev
 glibc-staticdev
 libXScrnSaver-dev
