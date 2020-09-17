@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.0.12
-Release  : 38
+Release  : 39
 URL      : https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
 Source1  : https://www.libsdl.org/release/SDL2-2.0.12.tar.gz.sig
@@ -19,33 +19,11 @@ Requires: SDL2-license = %{version}-%{release}
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-qmake
 BuildRequires : dbus-dev
-BuildRequires : gcc-dev32
-BuildRequires : gcc-libgcc32
-BuildRequires : gcc-libstdc++32
-BuildRequires : glibc-dev32
-BuildRequires : glibc-libc32
 BuildRequires : glibc-staticdev
 BuildRequires : libXScrnSaver-dev
 BuildRequires : libXxf86vm-dev
-BuildRequires : libXxf86vm-dev32
 BuildRequires : libsamplerate-dev
 BuildRequires : pkg-config
-BuildRequires : pkgconfig(32alsa)
-BuildRequires : pkgconfig(32dbus-1)
-BuildRequires : pkgconfig(32gbm)
-BuildRequires : pkgconfig(32gl)
-BuildRequires : pkgconfig(32libdrm)
-BuildRequires : pkgconfig(32libpulse-simple)
-BuildRequires : pkgconfig(32libudev)
-BuildRequires : pkgconfig(32libusb-1.0)
-BuildRequires : pkgconfig(32wayland-protocols)
-BuildRequires : pkgconfig(32x11)
-BuildRequires : pkgconfig(32xcursor)
-BuildRequires : pkgconfig(32xext)
-BuildRequires : pkgconfig(32xi)
-BuildRequires : pkgconfig(32xinerama)
-BuildRequires : pkgconfig(32xkbcommon)
-BuildRequires : pkgconfig(32xrandr)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(dbus-1)
 BuildRequires : pkgconfig(gbm)
@@ -91,17 +69,6 @@ Requires: SDL2 = %{version}-%{release}
 dev components for the SDL2 package.
 
 
-%package dev32
-Summary: dev32 components for the SDL2 package.
-Group: Default
-Requires: SDL2-lib32 = %{version}-%{release}
-Requires: SDL2-bin = %{version}-%{release}
-Requires: SDL2-dev = %{version}-%{release}
-
-%description dev32
-dev32 components for the SDL2 package.
-
-
 %package lib
 Summary: lib components for the SDL2 package.
 Group: Libraries
@@ -109,15 +76,6 @@ Requires: SDL2-license = %{version}-%{release}
 
 %description lib
 lib components for the SDL2 package.
-
-
-%package lib32
-Summary: lib32 components for the SDL2 package.
-Group: Default
-Requires: SDL2-license = %{version}-%{release}
-
-%description lib32
-lib32 components for the SDL2 package.
 
 
 %package license
@@ -131,23 +89,20 @@ license components for the SDL2 package.
 %prep
 %setup -q -n SDL2-2.0.12
 cd %{_builddir}/SDL2-2.0.12
-pushd ..
-cp -a SDL2-2.0.12 build32
-popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1583892890
+export SOURCE_DATE_EPOCH=1600305690
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure --disable-static --enable-sdl-dlopen \
 --enable-pulseaudio-shared \
@@ -155,37 +110,18 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -f
 --enable-video-wayland
 make  %{?_smp_mflags}
 
-pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%configure --disable-static --enable-sdl-dlopen \
---enable-pulseaudio-shared \
---enable-alsa \
---enable-video-wayland   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make  %{?_smp_mflags}
-popd
 %install
-export SOURCE_DATE_EPOCH=1583892890
+export SOURCE_DATE_EPOCH=1600305690
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
+cp %{_builddir}/SDL2-2.0.12/COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/5d118dd9f68514e2e8c0cee82a51e5672fa61a05
 cp %{_builddir}/SDL2-2.0.12/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
+cp %{_builddir}/SDL2-2.0.12/Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/SDL2/5482ec66d5d0f92458b5f1b65c9f19b64288b525
 cp %{_builddir}/SDL2-2.0.12/debian/copyright %{buildroot}/usr/share/package-licenses/SDL2/ff92c0e1e7b4047538588f56ff207441fc06d7a0
 cp %{_builddir}/SDL2-2.0.12/src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
 cp %{_builddir}/SDL2-2.0.12/src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 cp %{_builddir}/SDL2-2.0.12/src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
 cp %{_builddir}/SDL2-2.0.12/src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
-pushd ../build32/
-%make_install32
-if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
-then
-pushd %{buildroot}/usr/lib32/pkgconfig
-for i in *.pc ; do ln -s $i 32$i ; done
-popd
-fi
-popd
 %make_install
 
 %files
@@ -277,27 +213,16 @@ popd
 /usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
 
-%files dev32
-%defattr(-,root,root,-)
-/usr/lib32/cmake/SDL2/sdl2-config-version.cmake
-/usr/lib32/cmake/SDL2/sdl2-config.cmake
-/usr/lib32/libSDL2.so
-/usr/lib32/pkgconfig/32sdl2.pc
-/usr/lib32/pkgconfig/sdl2.pc
-
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libSDL2-2.0.so.0
 /usr/lib64/libSDL2-2.0.so.0.12.0
 
-%files lib32
-%defattr(-,root,root,-)
-/usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.12.0
-
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
+/usr/share/package-licenses/SDL2/5482ec66d5d0f92458b5f1b65c9f19b64288b525
+/usr/share/package-licenses/SDL2/5d118dd9f68514e2e8c0cee82a51e5672fa61a05
 /usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
 /usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
 /usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
