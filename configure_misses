@@ -4,6 +4,8 @@ Configure miss: linker option --nxcompat
 Configure miss: linker option --high-entropy-va
 Configure miss: wcslcpy
 Configure miss: wcslcat
+Configure miss: _wcsicmp
+Configure miss: _wcsnicmp
 Configure miss: _strrev
 Configure miss: _strupr
 Configure miss: _strlwr
@@ -16,6 +18,7 @@ Configure miss: _ui64toa
 Configure miss: _stricmp
 Configure miss: _strnicmp
 Configure miss: sysctlbyname
+Configure miss: elf_aux_info
 Configure miss: iconv_open in -liconv
 Configure miss: libunwind.h usability
 Configure miss: libunwind.h presence
@@ -26,7 +29,6 @@ Configure miss: Altivec with GCC altivec.h and -faltivec option
 Configure miss: Altivec with GCC -faltivec option
 Configure miss: necessary GCC -Wno-multichar option
 Configure miss: dlopen in -lc
-Configure miss: ARM SIMD
 Configure miss: JACK
 Configure miss: artsc-config
 Configure miss: esd-config
@@ -45,11 +47,6 @@ Configure miss: RPI
 Configure miss: Raspberry Pi
 Configure miss: dbus/dbus.h presence
 Configure miss: ibus-1.0/ibus.h presence
-Configure miss: FCITX
-Configure miss: fcitx/frontend.h usability
-Configure miss: fcitx/frontend.h presence
-Configure miss: fcitx/frontend.h
-Configure miss: Touchscreen library support
 Configure miss: pthread_np.h
 Configure miss: pthread_set_name_np
 Configure miss: Vivante VDK API
@@ -61,6 +58,8 @@ Configure miss: linker option --nxcompat
 Configure miss: linker option --high-entropy-va
 Configure miss: wcslcpy
 Configure miss: wcslcat
+Configure miss: _wcsicmp
+Configure miss: _wcsnicmp
 Configure miss: _strrev
 Configure miss: _strupr
 Configure miss: _strlwr
@@ -73,6 +72,7 @@ Configure miss: _ui64toa
 Configure miss: _stricmp
 Configure miss: _strnicmp
 Configure miss: sysctlbyname
+Configure miss: elf_aux_info
 Configure miss: iconv_open in -liconv
 Configure miss: libunwind.h usability
 Configure miss: libunwind.h presence
@@ -83,7 +83,6 @@ Configure miss: Altivec with GCC altivec.h and -faltivec option
 Configure miss: Altivec with GCC -faltivec option
 Configure miss: necessary GCC -Wno-multichar option
 Configure miss: dlopen in -lc
-Configure miss: ARM SIMD
 Configure miss: snd_ctl_open in -lasound
 Configure miss: JACK
 Configure miss: artsc-config
@@ -104,11 +103,6 @@ Configure miss: Raspberry Pi
 Configure miss: X
 Configure miss: dbus/dbus.h presence
 Configure miss: ibus-1.0/ibus.h presence
-Configure miss: FCITX
-Configure miss: fcitx/frontend.h usability
-Configure miss: fcitx/frontend.h presence
-Configure miss: fcitx/frontend.h
-Configure miss: Touchscreen library support
 Configure miss: pthread_np.h
 Configure miss: pthread_set_name_np
 Configure miss: Vivante VDK API
