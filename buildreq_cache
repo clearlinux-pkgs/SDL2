@@ -1,7 +1,5 @@
-2.0.14
+2.0.16
 alsa-lib-dev
-dbus-dev
-glibc-staticdev
 libXScrnSaver-dev
 libsamplerate-dev
 pkg-config

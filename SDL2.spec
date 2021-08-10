@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.0.14
-Release  : 42
-URL      : https://www.libsdl.org/release/SDL2-2.0.14.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.0.14.tar.gz
-Source1  : https://www.libsdl.org/release/SDL2-2.0.14.tar.gz.sig
+Version  : 2.0.16
+Release  : 43
+URL      : https://www.libsdl.org/release/SDL2-2.0.16.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.0.16.tar.gz
+Source1  : https://www.libsdl.org/release/SDL2-2.0.16.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC Zlib
@@ -19,13 +19,11 @@ Requires: SDL2-license = %{version}-%{release}
 BuildRequires : alsa-lib-dev
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-qmake
-BuildRequires : dbus-dev
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
-BuildRequires : glibc-staticdev
 BuildRequires : libXScrnSaver-dev
 BuildRequires : libXxf86vm-dev
 BuildRequires : libsamplerate-dev
@@ -42,6 +40,7 @@ BuildRequires : pkgconfig(gbm)
 BuildRequires : pkgconfig(gl)
 BuildRequires : pkgconfig(ibus-1.0)
 BuildRequires : pkgconfig(libdrm)
+BuildRequires : pkgconfig(libpipewire-0.3)
 BuildRequires : pkgconfig(libpulse-simple)
 BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(libusb-1.0)
@@ -119,10 +118,13 @@ license components for the SDL2 package.
 
 
 %prep
-%setup -q -n SDL2-2.0.14
-cd %{_builddir}/SDL2-2.0.14
+%setup -q -n SDL2-2.0.16
+cd %{_builddir}/SDL2-2.0.16
 pushd ..
-cp -a SDL2-2.0.14 build32
+cp -a SDL2-2.0.16 build32
+popd
+pushd ..
+cp -a SDL2-2.0.16 buildavx512
 popd
 
 %build
@@ -130,15 +132,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1609353378
+export SOURCE_DATE_EPOCH=1628636021
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -fzero-call-used-regs=used "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
 %configure --disable-static --enable-sdl-dlopen \
 --enable-pulseaudio-shared \
 --enable-alsa \
@@ -157,18 +159,29 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 --enable-video-wayland   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
+unset PKG_CONFIG_PATH
+pushd ../buildavx512/
+export CFLAGS="$CFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
+export CXXFLAGS="$CXXFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
+export FFLAGS="$FFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
+export FCFLAGS="$FCFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
+export LDFLAGS="$LDFLAGS -m64 -march=skylake-avx512"
+%configure --disable-static --enable-sdl-dlopen \
+--enable-pulseaudio-shared \
+--enable-alsa \
+--enable-video-wayland
+make  %{?_smp_mflags}
+popd
 %install
-export SOURCE_DATE_EPOCH=1609353378
+export SOURCE_DATE_EPOCH=1628636021
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
-cp %{_builddir}/SDL2-2.0.14/COPYING.txt %{buildroot}/usr/share/package-licenses/SDL2/5d118dd9f68514e2e8c0cee82a51e5672fa61a05
-cp %{_builddir}/SDL2-2.0.14/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
-cp %{_builddir}/SDL2-2.0.14/Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/SDL2/5482ec66d5d0f92458b5f1b65c9f19b64288b525
-cp %{_builddir}/SDL2-2.0.14/debian/copyright %{buildroot}/usr/share/package-licenses/SDL2/ff92c0e1e7b4047538588f56ff207441fc06d7a0
-cp %{_builddir}/SDL2-2.0.14/src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
-cp %{_builddir}/SDL2-2.0.14/src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
-cp %{_builddir}/SDL2-2.0.14/src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
-cp %{_builddir}/SDL2-2.0.14/src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
+cp %{_builddir}/SDL2-2.0.16/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
+cp %{_builddir}/SDL2-2.0.16/debian/copyright %{buildroot}/usr/share/package-licenses/SDL2/05cbdcbe336d378e545b15c624d1faa939e06740
+cp %{_builddir}/SDL2-2.0.16/src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
+cp %{_builddir}/SDL2-2.0.16/src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/SDL2-2.0.16/src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
+cp %{_builddir}/SDL2-2.0.16/src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -177,6 +190,9 @@ pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
+popd
+pushd ../buildavx512/
+%make_install_avx512
 popd
 %make_install
 
@@ -267,6 +283,7 @@ popd
 /usr/include/SDL2/close_code.h
 /usr/lib64/cmake/SDL2/sdl2-config-version.cmake
 /usr/lib64/cmake/SDL2/sdl2-config.cmake
+/usr/lib64/haswell/avx512_1/libSDL2.so
 /usr/lib64/libSDL2.so
 /usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
@@ -281,21 +298,21 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/haswell/avx512_1/libSDL2-2.0.so.0
+/usr/lib64/haswell/avx512_1/libSDL2-2.0.so.0.16.0
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.14.0
+/usr/lib64/libSDL2-2.0.so.0.16.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.14.0
+/usr/lib32/libSDL2-2.0.so.0.16.0
 
 %files license
 %defattr(0644,root,root,0755)
+/usr/share/package-licenses/SDL2/05cbdcbe336d378e545b15c624d1faa939e06740
 /usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
-/usr/share/package-licenses/SDL2/5482ec66d5d0f92458b5f1b65c9f19b64288b525
-/usr/share/package-licenses/SDL2/5d118dd9f68514e2e8c0cee82a51e5672fa61a05
 /usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
 /usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
 /usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
 /usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
-/usr/share/package-licenses/SDL2/ff92c0e1e7b4047538588f56ff207441fc06d7a0
