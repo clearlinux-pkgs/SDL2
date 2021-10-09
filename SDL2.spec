@@ -6,14 +6,15 @@
 #
 Name     : SDL2
 Version  : 2.0.16
-Release  : 43
+Release  : 44
 URL      : https://www.libsdl.org/release/SDL2-2.0.16.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.16.tar.gz
 Source1  : https://www.libsdl.org/release/SDL2-2.0.16.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
-License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC Zlib
+License  : BSD-3-Clause BSD-4-Clause-UC CPL-1.0 GPL-3.0 ISC LGPL-2.1 MIT OFL-1.1 PostgreSQL RSA-MD Zlib
 Requires: SDL2-bin = %{version}-%{release}
+Requires: SDL2-filemap = %{version}-%{release}
 Requires: SDL2-lib = %{version}-%{release}
 Requires: SDL2-license = %{version}-%{release}
 BuildRequires : alsa-lib-dev
@@ -63,6 +64,7 @@ multiple platforms.
 Summary: bin components for the SDL2 package.
 Group: Binaries
 Requires: SDL2-license = %{version}-%{release}
+Requires: SDL2-filemap = %{version}-%{release}
 
 %description bin
 bin components for the SDL2 package.
@@ -91,10 +93,19 @@ Requires: SDL2-dev = %{version}-%{release}
 dev32 components for the SDL2 package.
 
 
+%package filemap
+Summary: filemap components for the SDL2 package.
+Group: Default
+
+%description filemap
+filemap components for the SDL2 package.
+
+
 %package lib
 Summary: lib components for the SDL2 package.
 Group: Libraries
 Requires: SDL2-license = %{version}-%{release}
+Requires: SDL2-filemap = %{version}-%{release}
 
 %description lib
 lib components for the SDL2 package.
@@ -124,6 +135,9 @@ pushd ..
 cp -a SDL2-2.0.16 build32
 popd
 pushd ..
+cp -a SDL2-2.0.16 buildavx2
+popd
+pushd ..
 cp -a SDL2-2.0.16 buildavx512
 popd
 
@@ -132,15 +146,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1628636021
+export SOURCE_DATE_EPOCH=1633813658
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mno-vzeroupper -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mno-vzeroupper -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mno-vzeroupper -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mno-vzeroupper -mprefer-vector-width=256 "
 %configure --disable-static --enable-sdl-dlopen \
 --enable-pulseaudio-shared \
 --enable-alsa \
@@ -148,7 +162,7 @@ export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -fl
 make  %{?_smp_mflags}
 
 pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -160,12 +174,25 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 unset PKG_CONFIG_PATH
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
+%configure --disable-static --enable-sdl-dlopen \
+--enable-pulseaudio-shared \
+--enable-alsa \
+--enable-video-wayland
+make  %{?_smp_mflags}
+popd
+unset PKG_CONFIG_PATH
 pushd ../buildavx512/
-export CFLAGS="$CFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
-export CXXFLAGS="$CXXFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
-export FFLAGS="$FFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
-export FCFLAGS="$FCFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=256"
-export LDFLAGS="$LDFLAGS -m64 -march=skylake-avx512"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 %configure --disable-static --enable-sdl-dlopen \
 --enable-pulseaudio-shared \
 --enable-alsa \
@@ -173,15 +200,18 @@ export LDFLAGS="$LDFLAGS -m64 -march=skylake-avx512"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1628636021
+export SOURCE_DATE_EPOCH=1633813658
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
+cp %{_builddir}/SDL2-2.0.16/LICENSE.txt %{buildroot}/usr/share/package-licenses/SDL2/ccc6d22a6894ace0e50233777d4a2eace149ece7
 cp %{_builddir}/SDL2-2.0.16/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
+cp %{_builddir}/SDL2-2.0.16/Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/SDL2/b3dd53d4ac26dc03126d0b4642b9821a8bcef615
 cp %{_builddir}/SDL2-2.0.16/debian/copyright %{buildroot}/usr/share/package-licenses/SDL2/05cbdcbe336d378e545b15c624d1faa939e06740
 cp %{_builddir}/SDL2-2.0.16/src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
 cp %{_builddir}/SDL2-2.0.16/src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 cp %{_builddir}/SDL2-2.0.16/src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
 cp %{_builddir}/SDL2-2.0.16/src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
+cp %{_builddir}/SDL2-2.0.16/test/unifont-13.0.06-license.txt %{buildroot}/usr/share/package-licenses/SDL2/ee06847a47ae566e1f69859ef1b1621189c0e03c
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -190,9 +220,20 @@ pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
+pushd ../buildavx2/
+%make_install_v3
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 pushd ../buildavx512/
-%make_install_avx512
+%make_install_v4
+/usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 %make_install
 
@@ -283,7 +324,6 @@ popd
 /usr/include/SDL2/close_code.h
 /usr/lib64/cmake/SDL2/sdl2-config-version.cmake
 /usr/lib64/cmake/SDL2/sdl2-config.cmake
-/usr/lib64/haswell/avx512_1/libSDL2.so
 /usr/lib64/libSDL2.so
 /usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
@@ -296,12 +336,15 @@ popd
 /usr/lib32/pkgconfig/32sdl2.pc
 /usr/lib32/pkgconfig/sdl2.pc
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-SDL2
+
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/haswell/avx512_1/libSDL2-2.0.so.0
-/usr/lib64/haswell/avx512_1/libSDL2-2.0.so.0.16.0
 /usr/lib64/libSDL2-2.0.so.0
 /usr/lib64/libSDL2-2.0.so.0.16.0
+/usr/share/clear/optimized-elf/lib*
 
 %files lib32
 %defattr(-,root,root,-)
@@ -316,3 +359,6 @@ popd
 /usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
 /usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
 /usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+/usr/share/package-licenses/SDL2/b3dd53d4ac26dc03126d0b4642b9821a8bcef615
+/usr/share/package-licenses/SDL2/ccc6d22a6894ace0e50233777d4a2eace149ece7
+/usr/share/package-licenses/SDL2/ee06847a47ae566e1f69859ef1b1621189c0e03c
