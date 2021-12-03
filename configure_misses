@@ -26,10 +26,10 @@ Configure miss: NAS audio support
 Configure miss: NAS audio support
 Configure miss: NAS audio support
 Configure miss: NAS audio support
-Configure miss: Raspberry Pi
-Configure miss: Raspberry Pi
-Configure miss: Raspberry Pi
-Configure miss: Raspberry Pi
+Configure miss: Raspberry Pi 2/3
+Configure miss: Raspberry Pi 2/3
+Configure miss: Raspberry Pi 2/3
+Configure miss: Raspberry Pi 2/3
 Configure miss: Vivante FB API
 Configure miss: Vivante FB API
 Configure miss: Vivante FB API
@@ -136,18 +136,6 @@ Configure miss: libdecor support
 Configure miss: libdecor support
 Configure miss: libdecor support
 Configure miss: libdecor support
-Configure miss: libunwind.h
-Configure miss: libunwind.h
-Configure miss: libunwind.h
-Configure miss: libunwind.h
-Configure miss: libunwind.h presence
-Configure miss: libunwind.h presence
-Configure miss: libunwind.h presence
-Configure miss: libunwind.h presence
-Configure miss: libunwind.h usability
-Configure miss: libunwind.h usability
-Configure miss: libunwind.h usability
-Configure miss: libunwind.h usability
 Configure miss: linker option --dynamicbase
 Configure miss: linker option --dynamicbase
 Configure miss: linker option --dynamicbase
