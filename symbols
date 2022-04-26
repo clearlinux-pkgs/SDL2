@@ -24,6 +24,7 @@ libSDL2-2.0.so.0:SDL_AudioStreamPut
 libSDL2-2.0.so.0:SDL_BuildAudioCVT
 libSDL2-2.0.so.0:SDL_CalculateGammaRamp
 libSDL2-2.0.so.0:SDL_CaptureMouse
+libSDL2-2.0.so.0:SDL_ClearComposition
 libSDL2-2.0.so.0:SDL_ClearError
 libSDL2-2.0.so.0:SDL_ClearHints
 libSDL2-2.0.so.0:SDL_ClearQueuedAudio
@@ -73,6 +74,7 @@ libSDL2-2.0.so.0:SDL_DetachThread
 libSDL2-2.0.so.0:SDL_DisableScreenSaver
 libSDL2-2.0.so.0:SDL_DuplicateSurface
 libSDL2-2.0.so.0:SDL_EnableScreenSaver
+libSDL2-2.0.so.0:SDL_EncloseFPoints
 libSDL2-2.0.so.0:SDL_EnclosePoints
 libSDL2-2.0.so.0:SDL_Error
 libSDL2-2.0.so.0:SDL_EventState
@@ -252,6 +254,7 @@ libSDL2-2.0.so.0:SDL_GetTicks64
 libSDL2-2.0.so.0:SDL_GetTouchDevice
 libSDL2-2.0.so.0:SDL_GetTouchDeviceType
 libSDL2-2.0.so.0:SDL_GetTouchFinger
+libSDL2-2.0.so.0:SDL_GetTouchName
 libSDL2-2.0.so.0:SDL_GetVersion
 libSDL2-2.0.so.0:SDL_GetVideoDriver
 libSDL2-2.0.so.0:SDL_GetWindowBordersSize
@@ -317,6 +320,7 @@ libSDL2-2.0.so.0:SDL_HasColorKey
 libSDL2-2.0.so.0:SDL_HasEvent
 libSDL2-2.0.so.0:SDL_HasEvents
 libSDL2-2.0.so.0:SDL_HasIntersection
+libSDL2-2.0.so.0:SDL_HasIntersectionF
 libSDL2-2.0.so.0:SDL_HasMMX
 libSDL2-2.0.so.0:SDL_HasNEON
 libSDL2-2.0.so.0:SDL_HasRDTSC
@@ -330,6 +334,8 @@ libSDL2-2.0.so.0:SDL_HasSurfaceRLE
 libSDL2-2.0.so.0:SDL_HideWindow
 libSDL2-2.0.so.0:SDL_Init
 libSDL2-2.0.so.0:SDL_InitSubSystem
+libSDL2-2.0.so.0:SDL_IntersectFRect
+libSDL2-2.0.so.0:SDL_IntersectFRectAndLine
 libSDL2-2.0.so.0:SDL_IntersectRect
 libSDL2-2.0.so.0:SDL_IntersectRectAndLine
 libSDL2-2.0.so.0:SDL_IsGameController
@@ -338,6 +344,7 @@ libSDL2-2.0.so.0:SDL_IsScreenSaverEnabled
 libSDL2-2.0.so.0:SDL_IsShapedWindow
 libSDL2-2.0.so.0:SDL_IsTablet
 libSDL2-2.0.so.0:SDL_IsTextInputActive
+libSDL2-2.0.so.0:SDL_IsTextInputShown
 libSDL2-2.0.so.0:SDL_JoystickAttachVirtual
 libSDL2-2.0.so.0:SDL_JoystickClose
 libSDL2-2.0.so.0:SDL_JoystickCurrentPowerLevel
@@ -514,6 +521,7 @@ libSDL2-2.0.so.0:SDL_RenderGetMetalCommandEncoder
 libSDL2-2.0.so.0:SDL_RenderGetMetalLayer
 libSDL2-2.0.so.0:SDL_RenderGetScale
 libSDL2-2.0.so.0:SDL_RenderGetViewport
+libSDL2-2.0.so.0:SDL_RenderGetWindow
 libSDL2-2.0.so.0:SDL_RenderIsClipEnabled
 libSDL2-2.0.so.0:SDL_RenderLogicalToWindow
 libSDL2-2.0.so.0:SDL_RenderPresent
@@ -622,6 +630,7 @@ libSDL2-2.0.so.0:SDL_TLSGet
 libSDL2-2.0.so.0:SDL_TLSSet
 libSDL2-2.0.so.0:SDL_ThreadID
 libSDL2-2.0.so.0:SDL_TryLockMutex
+libSDL2-2.0.so.0:SDL_UnionFRect
 libSDL2-2.0.so.0:SDL_UnionRect
 libSDL2-2.0.so.0:SDL_UnloadObject
 libSDL2-2.0.so.0:SDL_UnlockAudio
