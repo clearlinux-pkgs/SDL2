@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.0.22
-Release  : 52
+Release  : 53
 URL      : https://www.libsdl.org/release/SDL2-2.0.22.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.0.22.tar.gz
 Source1  : https://www.libsdl.org/release/SDL2-2.0.22.tar.gz.sig
@@ -14,7 +14,6 @@ Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC OFL-1.1 Zlib
 Requires: SDL2-bin = %{version}-%{release}
-Requires: SDL2-filemap = %{version}-%{release}
 Requires: SDL2-lib = %{version}-%{release}
 Requires: SDL2-license = %{version}-%{release}
 BuildRequires : alsa-lib-dev
@@ -66,7 +65,6 @@ multiple platforms.
 Summary: bin components for the SDL2 package.
 Group: Binaries
 Requires: SDL2-license = %{version}-%{release}
-Requires: SDL2-filemap = %{version}-%{release}
 
 %description bin
 bin components for the SDL2 package.
@@ -95,19 +93,10 @@ Requires: SDL2-dev = %{version}-%{release}
 dev32 components for the SDL2 package.
 
 
-%package filemap
-Summary: filemap components for the SDL2 package.
-Group: Default
-
-%description filemap
-filemap components for the SDL2 package.
-
-
 %package lib
 Summary: lib components for the SDL2 package.
 Group: Libraries
 Requires: SDL2-license = %{version}-%{release}
-Requires: SDL2-filemap = %{version}-%{release}
 
 %description lib
 lib components for the SDL2 package.
@@ -148,15 +137,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1651000156
+export SOURCE_DATE_EPOCH=1656362045
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mno-vzeroupper -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mno-vzeroupper -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mno-vzeroupper -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mno-vzeroupper -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used -mprefer-vector-width=256 "
 %configure --disable-static --enable-sdl-dlopen \
 --enable-pulseaudio-shared \
 --enable-alsa \
@@ -202,7 +191,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1651000156
+export SOURCE_DATE_EPOCH=1656362045
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-2.0.22/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
@@ -234,8 +223,8 @@ pushd ../buildavx512/
 %make_install_v4
 popd
 %make_install
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
-/usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -325,6 +314,8 @@ popd
 /usr/include/SDL2/close_code.h
 /usr/lib64/cmake/SDL2/sdl2-config-version.cmake
 /usr/lib64/cmake/SDL2/sdl2-config.cmake
+/usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2.so
+/usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2.so
 /usr/lib64/libSDL2.so
 /usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
@@ -337,15 +328,14 @@ popd
 /usr/lib32/pkgconfig/32sdl2.pc
 /usr/lib32/pkgconfig/sdl2.pc
 
-%files filemap
-%defattr(-,root,root,-)
-/usr/share/clear/filemap/filemap-SDL2
-
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2-2.0.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2-2.0.so.0.22.0
+/usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2-2.0.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2-2.0.so.0.22.0
 /usr/lib64/libSDL2-2.0.so.0
 /usr/lib64/libSDL2-2.0.so.0.22.0
-/usr/share/clear/optimized-elf/lib*
 
 %files lib32
 %defattr(-,root,root,-)
