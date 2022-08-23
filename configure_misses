@@ -22,6 +22,14 @@ Configure miss: ESD - version >= 0.2.8
 Configure miss: ESD - version >= 0.2.8
 Configure miss: ESD - version >= 0.2.8
 Configure miss: ESD - version >= 0.2.8
+Configure miss: GCC -mlasx option
+Configure miss: GCC -mlasx option
+Configure miss: GCC -mlasx option
+Configure miss: GCC -mlasx option
+Configure miss: GCC -mlsx option
+Configure miss: GCC -mlsx option
+Configure miss: GCC -mlsx option
+Configure miss: GCC -mlsx option
 Configure miss: NAS audio support
 Configure miss: NAS audio support
 Configure miss: NAS audio support
@@ -99,14 +107,6 @@ Configure miss: audio/audiolib.h
 Configure miss: audio/audiolib.h
 Configure miss: audio/audiolib.h
 Configure miss: audio/audiolib.h
-Configure miss: audio/audiolib.h presence
-Configure miss: audio/audiolib.h presence
-Configure miss: audio/audiolib.h presence
-Configure miss: audio/audiolib.h presence
-Configure miss: audio/audiolib.h usability
-Configure miss: audio/audiolib.h usability
-Configure miss: audio/audiolib.h usability
-Configure miss: audio/audiolib.h usability
 Configure miss: bcm_host brcmegl
 Configure miss: bcm_host brcmegl
 Configure miss: bcm_host brcmegl
@@ -119,6 +119,10 @@ Configure miss: esd-config
 Configure miss: esd-config
 Configure miss: esd-config
 Configure miss: esd-config
+Configure miss: g++ option to enable C++11 features
+Configure miss: g++ option to enable C++11 features
+Configure miss: g++ option to enable C++11 features
+Configure miss: g++ option to enable C++11 features
 Configure miss: i686-generic-linux-gnu-windres
 Configure miss: iconv_open in -liconv
 Configure miss: iconv_open in -liconv
@@ -132,6 +136,10 @@ Configure miss: jack >= 0.125
 Configure miss: jack >= 0.125
 Configure miss: jack >= 0.125
 Configure miss: jack >= 0.125
+Configure miss: lasxintrin.h
+Configure miss: lasxintrin.h
+Configure miss: lasxintrin.h
+Configure miss: lasxintrin.h
 Configure miss: libdecor-0
 Configure miss: libdecor-0
 Configure miss: libdecor-0
@@ -148,6 +156,10 @@ Configure miss: linker option --nxcompat
 Configure miss: linker option --nxcompat
 Configure miss: linker option --nxcompat
 Configure miss: linker option --nxcompat
+Configure miss: lsxintrin.h
+Configure miss: lsxintrin.h
+Configure miss: lsxintrin.h
+Configure miss: lsxintrin.h
 Configure miss: necessary GCC -Wno-multichar option
 Configure miss: necessary GCC -Wno-multichar option
 Configure miss: necessary GCC -Wno-multichar option
@@ -173,14 +185,6 @@ Configure miss: sndio.h
 Configure miss: sndio.h
 Configure miss: sndio.h
 Configure miss: sndio.h
-Configure miss: sndio.h presence
-Configure miss: sndio.h presence
-Configure miss: sndio.h presence
-Configure miss: sndio.h presence
-Configure miss: sndio.h usability
-Configure miss: sndio.h usability
-Configure miss: sndio.h usability
-Configure miss: sndio.h usability
 Configure miss: sysctlbyname
 Configure miss: sysctlbyname
 Configure miss: sysctlbyname
