@@ -119,10 +119,18 @@ Configure miss: esd-config
 Configure miss: esd-config
 Configure miss: esd-config
 Configure miss: esd-config
+Configure miss: esound >= 0.2.8
+Configure miss: esound >= 0.2.8
+Configure miss: esound >= 0.2.8
+Configure miss: esound >= 0.2.8
 Configure miss: g++ option to enable C++11 features
 Configure miss: g++ option to enable C++11 features
 Configure miss: g++ option to enable C++11 features
 Configure miss: g++ option to enable C++11 features
+Configure miss: gsort
+Configure miss: gsort
+Configure miss: gsort
+Configure miss: gsort
 Configure miss: i686-generic-linux-gnu-windres
 Configure miss: iconv_open in -liconv
 Configure miss: iconv_open in -liconv
