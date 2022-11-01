@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.24.1
-Release  : 60
-URL      : https://www.libsdl.org/release/SDL2-2.24.1.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.24.1.tar.gz
-Source1  : https://www.libsdl.org/release/SDL2-2.24.1.tar.gz.sig
+Version  : 2.24.2
+Release  : 61
+URL      : https://www.libsdl.org/release/SDL2-2.24.2.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.24.2.tar.gz
+Source1  : https://www.libsdl.org/release/SDL2-2.24.2.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC OFL-1.1 Zlib
@@ -129,16 +129,16 @@ staticdev components for the SDL2 package.
 
 
 %prep
-%setup -q -n SDL2-2.24.1
-cd %{_builddir}/SDL2-2.24.1
+%setup -q -n SDL2-2.24.2
+cd %{_builddir}/SDL2-2.24.2
 pushd ..
-cp -a SDL2-2.24.1 build32
+cp -a SDL2-2.24.2 build32
 popd
 pushd ..
-cp -a SDL2-2.24.1 buildavx2
+cp -a SDL2-2.24.2 buildavx2
 popd
 pushd ..
-cp -a SDL2-2.24.1 buildavx512
+cp -a SDL2-2.24.2 buildavx512
 popd
 
 %build
@@ -146,7 +146,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1664985167
+export SOURCE_DATE_EPOCH=1667335058
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -200,7 +200,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1664985167
+export SOURCE_DATE_EPOCH=1667335058
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-%{version}/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623 || :
@@ -341,16 +341,16 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2-2.0.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2-2.0.so.0.2400.1
+/usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2-2.0.so.0.2400.2
 /usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2-2.0.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2-2.0.so.0.2400.1
+/usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2-2.0.so.0.2400.2
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.2400.1
+/usr/lib64/libSDL2-2.0.so.0.2400.2
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.2400.1
+/usr/lib32/libSDL2-2.0.so.0.2400.2
 
 %files license
 %defattr(0644,root,root,0755)
