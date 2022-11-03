@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.24.2
-Release  : 61
+Release  : 62
 URL      : https://www.libsdl.org/release/SDL2-2.24.2.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.24.2.tar.gz
 Source1  : https://www.libsdl.org/release/SDL2-2.24.2.tar.gz.sig
@@ -146,15 +146,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1667335058
+export SOURCE_DATE_EPOCH=1667439111
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition "
 %configure --disable-static --enable-sdl-dlopen \
 --enable-pulseaudio-shared \
 --enable-alsa \
@@ -188,10 +188,10 @@ make  %{?_smp_mflags}
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx512/
-export CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256 -Wl,-z,x86-64-v4"
-export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256 -Wl,-z,x86-64-v4"
-export FFLAGS="$FFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
-export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512 -Wl,-z,x86-64-v4 -mtune=sapphirerapids "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512 -Wl,-z,x86-64-v4 -mtune=sapphirerapids "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512"
 export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 %configure --disable-static --enable-sdl-dlopen \
 --enable-pulseaudio-shared \
@@ -200,7 +200,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1667335058
+export SOURCE_DATE_EPOCH=1667439111
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-%{version}/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623 || :
