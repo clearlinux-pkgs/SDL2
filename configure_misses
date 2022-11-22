@@ -180,19 +180,11 @@ Configure miss: pthread_set_name_np
 Configure miss: pthread_set_name_np
 Configure miss: pthread_set_name_np
 Configure miss: pthread_set_name_np
-Configure miss: sio_open in -lsndio
-Configure miss: sio_open in -lsndio
-Configure miss: sio_open in -lsndio
-Configure miss: sio_open in -lsndio
 Configure miss: snd_ctl_open in -lasound
-Configure miss: sndio audio support
-Configure miss: sndio audio support
-Configure miss: sndio audio support
-Configure miss: sndio audio support
-Configure miss: sndio.h
-Configure miss: sndio.h
-Configure miss: sndio.h
-Configure miss: sndio.h
+Configure miss: sndio
+Configure miss: sndio
+Configure miss: sndio
+Configure miss: sndio
 Configure miss: sysctlbyname
 Configure miss: sysctlbyname
 Configure miss: sysctlbyname
