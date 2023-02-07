@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.26.2
-Release  : 66
-URL      : https://www.libsdl.org/release/SDL2-2.26.2.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.26.2.tar.gz
-Source1  : https://www.libsdl.org/release/SDL2-2.26.2.tar.gz.sig
+Version  : 2.26.3
+Release  : 67
+URL      : https://www.libsdl.org/release/SDL2-2.26.3.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.26.3.tar.gz
+Source1  : https://www.libsdl.org/release/SDL2-2.26.3.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC OFL-1.1 Zlib
@@ -132,16 +132,16 @@ staticdev components for the SDL2 package.
 
 
 %prep
-%setup -q -n SDL2-2.26.2
-cd %{_builddir}/SDL2-2.26.2
+%setup -q -n SDL2-2.26.3
+cd %{_builddir}/SDL2-2.26.3
 pushd ..
-cp -a SDL2-2.26.2 build32
+cp -a SDL2-2.26.3 build32
 popd
 pushd ..
-cp -a SDL2-2.26.2 buildavx2
+cp -a SDL2-2.26.3 buildavx2
 popd
 pushd ..
-cp -a SDL2-2.26.2 buildavx512
+cp -a SDL2-2.26.3 buildavx512
 popd
 
 %build
@@ -149,7 +149,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1672769449
+export SOURCE_DATE_EPOCH=1675730737
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -191,8 +191,8 @@ make  %{?_smp_mflags}
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx512/
-export CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512 -Wl,-z,x86-64-v4 -mtune=sapphirerapids "
-export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512 -Wl,-z,x86-64-v4 -mtune=sapphirerapids "
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512 -Wl,-z,x86-64-v4 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512 -Wl,-z,x86-64-v4 "
 export FFLAGS="$FFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512"
 export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=512"
 export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
@@ -203,11 +203,10 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1672769449
+export SOURCE_DATE_EPOCH=1675730737
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-%{version}/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623 || :
-cp %{_builddir}/SDL2-%{version}/Xcode/SDL/pkg-support/resources/License.txt %{buildroot}/usr/share/package-licenses/SDL2/56855624d497345923d749f17502a18029d72631 || :
 cp %{_builddir}/SDL2-%{version}/src/hidapi/LICENSE-bsd.txt %{buildroot}/usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963 || :
 cp %{_builddir}/SDL2-%{version}/src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02 || :
 cp %{_builddir}/SDL2-%{version}/src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6 || :
@@ -344,21 +343,20 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2-2.0.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2-2.0.so.0.2600.2
+/usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2-2.0.so.0.2600.3
 /usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2-2.0.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2-2.0.so.0.2600.2
+/usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2-2.0.so.0.2600.3
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.2600.2
+/usr/lib64/libSDL2-2.0.so.0.2600.3
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.2600.2
+/usr/lib32/libSDL2-2.0.so.0.2600.3
 
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623
-/usr/share/package-licenses/SDL2/56855624d497345923d749f17502a18029d72631
 /usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6
 /usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1
 /usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
