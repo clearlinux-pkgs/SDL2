@@ -1,0 +1,5 @@
+# Delete static libs that are created for some reason in the optimized builds
+rm -f %{buildroot}-v3/usr/lib64/libSDL2_test.a
+rm -f %{buildroot}-v3/usr/lib64/libSDL2main.a
+rm -f %{buildroot}-v4/usr/lib64/libSDL2_test.a
+rm -f %{buildroot}-v4/usr/lib64/libSDL2main.a

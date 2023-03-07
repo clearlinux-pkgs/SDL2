@@ -6,7 +6,7 @@
 #
 Name     : SDL2
 Version  : 2.26.4
-Release  : 68
+Release  : 71
 URL      : https://www.libsdl.org/release/SDL2-2.26.4.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.26.4.tar.gz
 Source1  : https://www.libsdl.org/release/SDL2-2.26.4.tar.gz.sig
@@ -122,15 +122,6 @@ Group: Default
 license components for the SDL2 package.
 
 
-%package staticdev
-Summary: staticdev components for the SDL2 package.
-Group: Default
-Requires: SDL2-dev = %{version}-%{release}
-
-%description staticdev
-staticdev components for the SDL2 package.
-
-
 %prep
 %setup -q -n SDL2-2.26.4
 cd %{_builddir}/SDL2-2.26.4
@@ -149,7 +140,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1678204619
+export SOURCE_DATE_EPOCH=1678230923
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -203,7 +194,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1678204619
+export SOURCE_DATE_EPOCH=1678230923
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-%{version}/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623 || :
@@ -234,6 +225,13 @@ pushd ../buildavx512/
 %make_install_v4
 popd
 %make_install
+## install_append content
+# Delete static libs that are created for some reason in the optimized builds
+rm -f %{buildroot}-v3/usr/lib64/libSDL2_test.a
+rm -f %{buildroot}-v3/usr/lib64/libSDL2main.a
+rm -f %{buildroot}-v4/usr/lib64/libSDL2_test.a
+rm -f %{buildroot}-v4/usr/lib64/libSDL2main.a
+## install_append end
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 /usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
@@ -362,10 +360,3 @@ popd
 /usr/share/package-licenses/SDL2/7dde42b4c6fdafae722d8d07556b6d9dba4d2963
 /usr/share/package-licenses/SDL2/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 /usr/share/package-licenses/SDL2/ee06847a47ae566e1f69859ef1b1621189c0e03c
-
-%files staticdev
-%defattr(-,root,root,-)
-/usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2_test.a
-/usr/lib64/glibc-hwcaps/x86-64-v3/libSDL2main.a
-/usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2_test.a
-/usr/lib64/glibc-hwcaps/x86-64-v4/libSDL2main.a
