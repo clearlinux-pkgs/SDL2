@@ -6,11 +6,11 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.27.1
-Release  : 73
-URL      : https://www.libsdl.org/release/SDL2-2.27.1.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.27.1.tar.gz
-Source1  : https://www.libsdl.org/release/SDL2-2.27.1.tar.gz.sig
+Version  : 2.28.0
+Release  : 74
+URL      : https://www.libsdl.org/release/SDL2-2.28.0.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.28.0.tar.gz
+Source1  : https://www.libsdl.org/release/SDL2-2.28.0.tar.gz.sig
 Summary  : Simple DirectMedia Layer
 Group    : Development/Tools
 License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC OFL-1.1 Zlib
@@ -123,16 +123,16 @@ license components for the SDL2 package.
 
 
 %prep
-%setup -q -n SDL2-2.27.1
-cd %{_builddir}/SDL2-2.27.1
+%setup -q -n SDL2-2.28.0
+cd %{_builddir}/SDL2-2.28.0
 pushd ..
-cp -a SDL2-2.27.1 build32
+cp -a SDL2-2.28.0 build32
 popd
 pushd ..
-cp -a SDL2-2.27.1 buildavx2
+cp -a SDL2-2.28.0 buildavx2
 popd
 pushd ..
-cp -a SDL2-2.27.1 buildavx512
+cp -a SDL2-2.28.0 buildavx512
 popd
 
 %build
@@ -140,7 +140,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1686757516
+export SOURCE_DATE_EPOCH=1687305708
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -194,7 +194,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1686757516
+export SOURCE_DATE_EPOCH=1687305708
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-%{version}/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623 || :
@@ -338,15 +338,15 @@ rm -f %{buildroot}-v4/usr/lib64/libSDL2main.a
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/libSDL2-2.0.so.0.2701.0
-/V4/usr/lib64/libSDL2-2.0.so.0.2701.0
+/V3/usr/lib64/libSDL2-2.0.so.0.2800.0
+/V4/usr/lib64/libSDL2-2.0.so.0.2800.0
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.2701.0
+/usr/lib64/libSDL2-2.0.so.0.2800.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.2701.0
+/usr/lib32/libSDL2-2.0.so.0.2800.0
 
 %files license
 %defattr(0644,root,root,0755)
