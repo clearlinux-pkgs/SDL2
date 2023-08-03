@@ -1,4 +1,6 @@
 2.28.2
+alsa-lib-dev
 libXScrnSaver-dev
 libsamplerate-dev
+pkg-config
 wayland-dev

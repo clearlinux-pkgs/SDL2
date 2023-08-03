@@ -7,7 +7,7 @@
 #
 Name     : SDL2
 Version  : 2.28.2
-Release  : 77
+Release  : 78
 URL      : https://www.libsdl.org/release/SDL2-2.28.2.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.28.2.tar.gz
 Source1  : https://www.libsdl.org/release/SDL2-2.28.2.tar.gz.sig
@@ -17,10 +17,24 @@ License  : BSD-3-Clause CPL-1.0 GPL-3.0 ISC OFL-1.1 Zlib
 Requires: SDL2-bin = %{version}-%{release}
 Requires: SDL2-lib = %{version}-%{release}
 Requires: SDL2-license = %{version}-%{release}
+BuildRequires : alsa-lib-dev
 BuildRequires : buildreq-configure
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : libXScrnSaver-dev
 BuildRequires : libXxf86vm-dev
 BuildRequires : libsamplerate-dev
+BuildRequires : pkg-config
+BuildRequires : pkgconfig(32dbus-1)
+BuildRequires : pkgconfig(32gbm)
+BuildRequires : pkgconfig(32libdrm)
+BuildRequires : pkgconfig(32libpulse-simple)
+BuildRequires : pkgconfig(32libudev)
+BuildRequires : pkgconfig(32libunwind)
+BuildRequires : pkgconfig(32libusb-1.0)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(dbus-1)
 BuildRequires : pkgconfig(gbm)
@@ -71,6 +85,17 @@ Requires: SDL2 = %{version}-%{release}
 dev components for the SDL2 package.
 
 
+%package dev32
+Summary: dev32 components for the SDL2 package.
+Group: Default
+Requires: SDL2-lib32 = %{version}-%{release}
+Requires: SDL2-bin = %{version}-%{release}
+Requires: SDL2-dev = %{version}-%{release}
+
+%description dev32
+dev32 components for the SDL2 package.
+
+
 %package lib
 Summary: lib components for the SDL2 package.
 Group: Libraries
@@ -78,6 +103,15 @@ Requires: SDL2-license = %{version}-%{release}
 
 %description lib
 lib components for the SDL2 package.
+
+
+%package lib32
+Summary: lib32 components for the SDL2 package.
+Group: Default
+Requires: SDL2-license = %{version}-%{release}
+
+%description lib32
+lib32 components for the SDL2 package.
 
 
 %package license
@@ -92,6 +126,9 @@ license components for the SDL2 package.
 %setup -q -n SDL2-2.28.2
 cd %{_builddir}/SDL2-2.28.2
 pushd ..
+cp -a SDL2-2.28.2 build32
+popd
+pushd ..
 cp -a SDL2-2.28.2 buildavx2
 popd
 pushd ..
@@ -103,7 +140,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1691000762
+export SOURCE_DATE_EPOCH=1691101959
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -118,6 +155,18 @@ export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section
 --enable-video-wayland
 make  %{?_smp_mflags}
 
+pushd ../build32/
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
+%configure --disable-static --enable-sdl-dlopen \
+--enable-pulseaudio-shared \
+--enable-alsa \
+--enable-video-wayland   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make  %{?_smp_mflags}
+popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
@@ -145,7 +194,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1691000762
+export SOURCE_DATE_EPOCH=1691101959
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-%{version}/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623 || :
@@ -154,6 +203,21 @@ cp %{_builddir}/SDL2-%{version}/src/hidapi/LICENSE-gpl3.txt %{buildroot}/usr/sha
 cp %{_builddir}/SDL2-%{version}/src/hidapi/LICENSE-orig.txt %{buildroot}/usr/share/package-licenses/SDL2/66047dbcf3fd689c99472266f5ad141c53d6f2c6 || :
 cp %{_builddir}/SDL2-%{version}/src/video/yuv2rgb/LICENSE %{buildroot}/usr/share/package-licenses/SDL2/763a61ff74960ead36b9ef5f5db65d083d7466c1 || :
 cp %{_builddir}/SDL2-%{version}/test/unifont-13.0.06-license.txt %{buildroot}/usr/share/package-licenses/SDL2/ee06847a47ae566e1f69859ef1b1621189c0e03c || :
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 pushd ../buildavx2/
 %make_install_v3
 popd
@@ -264,12 +328,25 @@ rm -f %{buildroot}-v4/usr/lib64/libSDL2main.a
 /usr/lib64/pkgconfig/sdl2.pc
 /usr/share/aclocal/*.m4
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/cmake/SDL2/sdl2-config-version.cmake
+/usr/lib32/cmake/SDL2/sdl2-config.cmake
+/usr/lib32/libSDL2.so
+/usr/lib32/pkgconfig/32sdl2.pc
+/usr/lib32/pkgconfig/sdl2.pc
+
 %files lib
 %defattr(-,root,root,-)
 /V3/usr/lib64/libSDL2-2.0.so.0.2800.2
 /V4/usr/lib64/libSDL2-2.0.so.0.2800.2
 /usr/lib64/libSDL2-2.0.so.0
 /usr/lib64/libSDL2-2.0.so.0.2800.2
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libSDL2-2.0.so.0
+/usr/lib32/libSDL2-2.0.so.0.2800.2
 
 %files license
 %defattr(0644,root,root,0755)

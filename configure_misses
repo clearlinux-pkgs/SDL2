@@ -1,144 +1,195 @@
 Configure miss: Altivec with GCC -faltivec option
 Configure miss: Altivec with GCC -faltivec option
 Configure miss: Altivec with GCC -faltivec option
+Configure miss: Altivec with GCC -faltivec option
+Configure miss: Altivec with GCC -maltivec option
 Configure miss: Altivec with GCC -maltivec option
 Configure miss: Altivec with GCC -maltivec option
 Configure miss: Altivec with GCC -maltivec option
 Configure miss: Altivec with GCC altivec.h and -faltivec option
 Configure miss: Altivec with GCC altivec.h and -faltivec option
 Configure miss: Altivec with GCC altivec.h and -faltivec option
+Configure miss: Altivec with GCC altivec.h and -faltivec option
+Configure miss: Altivec with GCC altivec.h and -maltivec option
 Configure miss: Altivec with GCC altivec.h and -maltivec option
 Configure miss: Altivec with GCC altivec.h and -maltivec option
 Configure miss: Altivec with GCC altivec.h and -maltivec option
 Configure miss: AuOpenServer in -laudio
 Configure miss: AuOpenServer in -laudio
 Configure miss: AuOpenServer in -laudio
+Configure miss: AuOpenServer in -laudio
+Configure miss: ESD - version >= 0.2.8
 Configure miss: ESD - version >= 0.2.8
 Configure miss: ESD - version >= 0.2.8
 Configure miss: ESD - version >= 0.2.8
 Configure miss: GCC -mlasx option
 Configure miss: GCC -mlasx option
 Configure miss: GCC -mlasx option
+Configure miss: GCC -mlasx option
+Configure miss: GCC -mlsx option
 Configure miss: GCC -mlsx option
 Configure miss: GCC -mlsx option
 Configure miss: GCC -mlsx option
 Configure miss: NAS audio support
 Configure miss: NAS audio support
 Configure miss: NAS audio support
+Configure miss: NAS audio support
+Configure miss: Raspberry Pi 2/3
 Configure miss: Raspberry Pi 2/3
 Configure miss: Raspberry Pi 2/3
 Configure miss: Raspberry Pi 2/3
 Configure miss: Vivante FB API
 Configure miss: Vivante FB API
 Configure miss: Vivante FB API
+Configure miss: Vivante FB API
 Configure miss: Vivante VDK API
 Configure miss: Vivante VDK API
 Configure miss: Vivante VDK API
+Configure miss: Vivante VDK API
+Configure miss: X
+Configure miss: _i64toa
 Configure miss: _i64toa
 Configure miss: _i64toa
 Configure miss: _i64toa
 Configure miss: _ltoa
 Configure miss: _ltoa
 Configure miss: _ltoa
+Configure miss: _ltoa
+Configure miss: _stricmp
 Configure miss: _stricmp
 Configure miss: _stricmp
 Configure miss: _stricmp
 Configure miss: _strlwr
 Configure miss: _strlwr
 Configure miss: _strlwr
+Configure miss: _strlwr
+Configure miss: _strnicmp
 Configure miss: _strnicmp
 Configure miss: _strnicmp
 Configure miss: _strnicmp
 Configure miss: _strrev
 Configure miss: _strrev
 Configure miss: _strrev
+Configure miss: _strrev
+Configure miss: _strupr
 Configure miss: _strupr
 Configure miss: _strupr
 Configure miss: _strupr
 Configure miss: _ui64toa
 Configure miss: _ui64toa
 Configure miss: _ui64toa
+Configure miss: _ui64toa
+Configure miss: _uitoa
 Configure miss: _uitoa
 Configure miss: _uitoa
 Configure miss: _uitoa
 Configure miss: _ultoa
 Configure miss: _ultoa
 Configure miss: _ultoa
+Configure miss: _ultoa
+Configure miss: _wcsdup
 Configure miss: _wcsdup
 Configure miss: _wcsdup
 Configure miss: _wcsdup
 Configure miss: _wcsicmp
 Configure miss: _wcsicmp
 Configure miss: _wcsicmp
+Configure miss: _wcsicmp
+Configure miss: _wcsnicmp
 Configure miss: _wcsnicmp
 Configure miss: _wcsnicmp
 Configure miss: _wcsnicmp
 Configure miss: artsc-config
 Configure miss: artsc-config
 Configure miss: artsc-config
+Configure miss: artsc-config
+Configure miss: audio/audiolib.h
 Configure miss: audio/audiolib.h
 Configure miss: audio/audiolib.h
 Configure miss: audio/audiolib.h
 Configure miss: bcm_host brcmegl
 Configure miss: bcm_host brcmegl
 Configure miss: bcm_host brcmegl
+Configure miss: bcm_host brcmegl
+Configure miss: elf_aux_info
 Configure miss: elf_aux_info
 Configure miss: elf_aux_info
 Configure miss: elf_aux_info
 Configure miss: esd-config
 Configure miss: esd-config
 Configure miss: esd-config
+Configure miss: esd-config
+Configure miss: esound >= 0.2.8
 Configure miss: esound >= 0.2.8
 Configure miss: esound >= 0.2.8
 Configure miss: esound >= 0.2.8
 Configure miss: g++ option to enable C++11 features
 Configure miss: g++ option to enable C++11 features
 Configure miss: g++ option to enable C++11 features
+Configure miss: g++ option to enable C++11 features
 Configure miss: gsort
 Configure miss: gsort
 Configure miss: gsort
+Configure miss: gsort
+Configure miss: i686-generic-linux-gnu-windres
+Configure miss: iconv_open in -liconv
 Configure miss: iconv_open in -liconv
 Configure miss: iconv_open in -liconv
 Configure miss: iconv_open in -liconv
 Configure miss: itoa
 Configure miss: itoa
 Configure miss: itoa
+Configure miss: itoa
+Configure miss: jack >= 0.125
 Configure miss: jack >= 0.125
 Configure miss: jack >= 0.125
 Configure miss: jack >= 0.125
 Configure miss: lasxintrin.h
 Configure miss: lasxintrin.h
 Configure miss: lasxintrin.h
+Configure miss: lasxintrin.h
+Configure miss: libdecor-0
 Configure miss: libdecor-0
 Configure miss: libdecor-0
 Configure miss: libdecor-0
 Configure miss: linker option --dynamicbase
 Configure miss: linker option --dynamicbase
 Configure miss: linker option --dynamicbase
+Configure miss: linker option --dynamicbase
+Configure miss: linker option --high-entropy-va
 Configure miss: linker option --high-entropy-va
 Configure miss: linker option --high-entropy-va
 Configure miss: linker option --high-entropy-va
 Configure miss: linker option --nxcompat
 Configure miss: linker option --nxcompat
 Configure miss: linker option --nxcompat
+Configure miss: linker option --nxcompat
+Configure miss: lsxintrin.h
 Configure miss: lsxintrin.h
 Configure miss: lsxintrin.h
 Configure miss: lsxintrin.h
 Configure miss: necessary GCC -Wno-multichar option
 Configure miss: necessary GCC -Wno-multichar option
 Configure miss: necessary GCC -Wno-multichar option
+Configure miss: necessary GCC -Wno-multichar option
+Configure miss: pthread_np.h
 Configure miss: pthread_np.h
 Configure miss: pthread_np.h
 Configure miss: pthread_np.h
 Configure miss: pthread_set_name_np
 Configure miss: pthread_set_name_np
 Configure miss: pthread_set_name_np
+Configure miss: pthread_set_name_np
+Configure miss: snd_ctl_open in -lasound
+Configure miss: sndio
 Configure miss: sndio
 Configure miss: sndio
 Configure miss: sndio
 Configure miss: sysctlbyname
 Configure miss: sysctlbyname
 Configure miss: sysctlbyname
+Configure miss: sysctlbyname
+Configure miss: windres
 Configure miss: windres
 Configure miss: windres
 Configure miss: windres
