@@ -7,7 +7,7 @@
 #
 Name     : SDL2
 Version  : 2.28.3
-Release  : 79
+Release  : 80
 URL      : https://www.libsdl.org/release/SDL2-2.28.3.tar.gz
 Source0  : https://www.libsdl.org/release/SDL2-2.28.3.tar.gz
 Source1  : https://www.libsdl.org/release/SDL2-2.28.3.tar.gz.sig
@@ -140,7 +140,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1693938493
+export SOURCE_DATE_EPOCH=1695743315
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -194,7 +194,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1693938493
+export SOURCE_DATE_EPOCH=1695743315
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-%{version}/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623 || :
