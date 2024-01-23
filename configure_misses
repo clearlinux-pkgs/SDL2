@@ -132,10 +132,10 @@ Configure miss: gsort
 Configure miss: gsort
 Configure miss: gsort
 Configure miss: i686-generic-linux-gnu-windres
-Configure miss: iconv_open in -liconv
-Configure miss: iconv_open in -liconv
-Configure miss: iconv_open in -liconv
-Configure miss: iconv_open in -liconv
+Configure miss: iconv in libiconv
+Configure miss: iconv in libiconv
+Configure miss: iconv in libiconv
+Configure miss: iconv in libiconv
 Configure miss: itoa
 Configure miss: itoa
 Configure miss: itoa
