@@ -22,10 +22,6 @@ Configure miss: ESD - version >= 0.2.8
 Configure miss: ESD - version >= 0.2.8
 Configure miss: ESD - version >= 0.2.8
 Configure miss: ESD - version >= 0.2.8
-Configure miss: GCC -mlasx option
-Configure miss: GCC -mlasx option
-Configure miss: GCC -mlasx option
-Configure miss: GCC -mlasx option
 Configure miss: GCC -mlsx option
 Configure miss: GCC -mlsx option
 Configure miss: GCC -mlsx option
@@ -144,10 +140,6 @@ Configure miss: jack >= 0.125
 Configure miss: jack >= 0.125
 Configure miss: jack >= 0.125
 Configure miss: jack >= 0.125
-Configure miss: lasxintrin.h
-Configure miss: lasxintrin.h
-Configure miss: lasxintrin.h
-Configure miss: lasxintrin.h
 Configure miss: libdecor-0
 Configure miss: libdecor-0
 Configure miss: libdecor-0
