@@ -8,11 +8,11 @@
 # Source0 file verified with key 0x30A59377A7763BE6 (slouken@libsdl.org)
 #
 Name     : SDL2
-Version  : 2.30.10
-Release  : 97
-URL      : https://www.libsdl.org/release/SDL2-2.30.10.tar.gz
-Source0  : https://www.libsdl.org/release/SDL2-2.30.10.tar.gz
-Source1  : https://www.libsdl.org/release/SDL2-2.30.10.tar.gz.sig
+Version  : 2.30.11
+Release  : 98
+URL      : https://www.libsdl.org/release/SDL2-2.30.11.tar.gz
+Source0  : https://www.libsdl.org/release/SDL2-2.30.11.tar.gz
+Source1  : https://www.libsdl.org/release/SDL2-2.30.11.tar.gz.sig
 Source2  : 30A59377A7763BE6.pkey
 Summary  : Simple DirectMedia Layer is a cross-platform multimedia library designed to provide low level access to audio, keyboard, mouse, joystick, 3D hardware via OpenGL, and 2D video framebuffer.
 Group    : Development/Tools
@@ -133,16 +133,16 @@ chmod 700 .gnupg
 gpg --homedir .gnupg --import %{SOURCE2}
 gpg --homedir .gnupg --status-fd 1 --verify %{SOURCE1} %{SOURCE0} > gpg.status
 grep -E '^\[GNUPG:\] (GOODSIG|EXPKEYSIG) 30A59377A7763BE6' gpg.status
-%setup -q -n SDL2-2.30.10
-cd %{_builddir}/SDL2-2.30.10
+%setup -q -n SDL2-2.30.11
+cd %{_builddir}/SDL2-2.30.11
 pushd ..
-cp -a SDL2-2.30.10 build32
+cp -a SDL2-2.30.11 build32
 popd
 pushd ..
-cp -a SDL2-2.30.10 buildavx2
+cp -a SDL2-2.30.11 buildavx2
 popd
 pushd ..
-cp -a SDL2-2.30.10 buildavx512
+cp -a SDL2-2.30.11 buildavx512
 popd
 
 %build
@@ -150,7 +150,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1733827612
+export SOURCE_DATE_EPOCH=1735831088
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -227,7 +227,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1733827612
+export SOURCE_DATE_EPOCH=1735831088
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/SDL2
 cp %{_builddir}/SDL2-%{version}/Xcode-iOS/Demos/data/bitmapfont/license.txt %{buildroot}/usr/share/package-licenses/SDL2/40e37820c4fd40cc2914e1df5b24158e312e9623 || :
@@ -375,15 +375,15 @@ rm -f %{buildroot}-v4/usr/lib64/libSDL2main.a
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/libSDL2-2.0.so.0.3000.10
-/V4/usr/lib64/libSDL2-2.0.so.0.3000.10
+/V3/usr/lib64/libSDL2-2.0.so.0.3000.11
+/V4/usr/lib64/libSDL2-2.0.so.0.3000.11
 /usr/lib64/libSDL2-2.0.so.0
-/usr/lib64/libSDL2-2.0.so.0.3000.10
+/usr/lib64/libSDL2-2.0.so.0.3000.11
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libSDL2-2.0.so.0
-/usr/lib32/libSDL2-2.0.so.0.3000.10
+/usr/lib32/libSDL2-2.0.so.0.3000.11
 
 %files license
 %defattr(0644,root,root,0755)
