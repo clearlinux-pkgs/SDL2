@@ -30,10 +30,10 @@ Configure miss: NAS audio support
 Configure miss: NAS audio support
 Configure miss: NAS audio support
 Configure miss: NAS audio support
-Configure miss: Raspberry Pi 2/3
-Configure miss: Raspberry Pi 2/3
-Configure miss: Raspberry Pi 2/3
-Configure miss: Raspberry Pi 2/3
+Configure miss: Raspberry Pi 0-3
+Configure miss: Raspberry Pi 0-3
+Configure miss: Raspberry Pi 0-3
+Configure miss: Raspberry Pi 0-3
 Configure miss: Vivante FB API
 Configure miss: Vivante FB API
 Configure miss: Vivante FB API
@@ -103,10 +103,14 @@ Configure miss: audio/audiolib.h
 Configure miss: audio/audiolib.h
 Configure miss: audio/audiolib.h
 Configure miss: audio/audiolib.h
-Configure miss: bcm_host brcmegl
-Configure miss: bcm_host brcmegl
-Configure miss: bcm_host brcmegl
-Configure miss: bcm_host brcmegl
+Configure miss: bcm_host
+Configure miss: bcm_host
+Configure miss: bcm_host
+Configure miss: bcm_host
+Configure miss: brcmegl
+Configure miss: brcmegl
+Configure miss: brcmegl
+Configure miss: brcmegl
 Configure miss: elf_aux_info
 Configure miss: elf_aux_info
 Configure miss: elf_aux_info
